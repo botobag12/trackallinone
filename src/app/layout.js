@@ -2,7 +2,7 @@
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://trackallinone.com"),
+  metadataBase: new URL("https://www.trackallinone.com"),
 
   title: {
     default: "TrackAllInOne - Universal Shipment Tracking",
@@ -10,7 +10,7 @@ export const metadata = {
   },
 
   description:
-    "Track shipments from major courier and postal services around the world. Select your courier, enter your tracking number, and access official shipment tracking.",
+    "Track shipments from major courier and postal services worldwide. Select your courier, enter your tracking number, and get official tracking updates.",
 
   keywords: [
     "shipment tracking",
@@ -48,8 +48,8 @@ export const metadata = {
   openGraph: {
     title: "TrackAllInOne - Universal Shipment Tracking",
     description:
-      "Track shipments from major courier and postal services around the world from one convenient place.",
-    url: "https://trackallinone.com",
+      "Track shipments from major courier and postal services worldwide from one convenient place.",
+    url: "https://www.trackallinone.com",
     siteName: "TrackAllInOne",
     type: "website",
     images: [
@@ -66,12 +66,12 @@ export const metadata = {
     card: "summary_large_image",
     title: "TrackAllInOne - Universal Shipment Tracking",
     description:
-      "Track shipments from major courier and postal services around the world.",
+      "Track shipments from major courier and postal services worldwide.",
     images: ["/TRACK.png"],
   },
 
   alternates: {
-    canonical: "https://trackallinone.com",
+    canonical: "https://www.trackallinone.com",
   },
 };
 
@@ -82,8 +82,8 @@ export default function RootLayout({ children }) {
     "@graph": [
       {
         "@type": "WebSite",
-        "@id": "https://trackallinone.com/#website",
-        url: "https://trackallinone.com",
+        "@id": "https://www.trackallinone.com/#website",
+        url: "https://www.trackallinone.com",
         name: "TrackAllInOne",
         description:
           "Universal shipment tracking for major courier and postal services.",
@@ -91,12 +91,12 @@ export default function RootLayout({ children }) {
 
       {
         "@type": "Organization",
-        "@id": "https://trackallinone.com/#organization",
+        "@id": "https://www.trackallinone.com/#organization",
         name: "TrackAllInOne",
-        url: "https://trackallinone.com",
+        url: "https://www.trackallinone.com",
         logo: {
           "@type": "ImageObject",
-          url: "https://trackallinone.com/TRACK.png",
+          url: "https://www.trackallinone.com/TRACK.png",
         },
       },
     ],

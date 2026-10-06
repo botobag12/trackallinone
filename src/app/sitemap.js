@@ -1,7 +1,7 @@
-import couriers from "@/data/couriers";
+ import couriers from "@/data/couriers";
 
 export default function sitemap() {
-  const baseUrl = "https://trackallinone.com";
+  const baseUrl = "https://www.trackallinone.com";
 
   const staticPages = [
     "",

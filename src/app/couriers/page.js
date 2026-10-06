@@ -8,7 +8,7 @@ export const metadata = {
   description:
     "Find and track major courier and postal services including TCS, DHL, FedEx, UPS, USPS, Royal Mail, and more. Access official shipment tracking services through TrackAllInOne.",
   alternates: {
-    canonical: "https://trackallinone.com/couriers",
+    canonical: "https://www.trackallinone.com/couriers",
   },
   robots: {
     index: true,
@@ -18,7 +18,7 @@ export const metadata = {
     title: "Courier Tracking Directory | TrackAllInOne",
     description:
       "Find major courier and postal services and access their official shipment tracking services through TrackAllInOne.",
-    url: "https://trackallinone.com/couriers",
+    url: "https://www.trackallinone.com/couriers",
     siteName: "TrackAllInOne",
     type: "website",
     images: [
@@ -51,16 +51,10 @@ export default function CouriersPage() {
   return (
     <main className="min-h-screen bg-[#FFF8ED] text-[#111111]">
 
-      {/* ================= HEADER ================= */}
-
       <Header />
 
-      {/* ================= HERO ================= */}
-
       <section className="px-6 py-16 text-center">
-
         <div className="mx-auto max-w-4xl">
-
           <p className="font-semibold uppercase tracking-[0.2em] text-[#7A1717]">
             Courier Directory
           </p>
@@ -74,17 +68,11 @@ export default function CouriersPage() {
             world and access their official shipment tracking
             websites through TrackAllInOne.
           </p>
-
         </div>
-
       </section>
 
-      {/* ================= PAKISTAN ================= */}
-
       <section className="px-6 pb-16">
-
         <div className="mx-auto max-w-6xl">
-
           <h2 className="text-3xl font-bold">
             Pakistan Courier Tracking
           </h2>
@@ -96,15 +84,12 @@ export default function CouriersPage() {
           </p>
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
             {pakistanCouriers.map((courier) => (
-
               <Link
                 key={courier.id}
                 href={`/couriers/${courier.id}`}
                 className="rounded-2xl border border-[#E5DCD0] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-[#7A1717] hover:shadow-lg"
               >
-
                 <h3 className="text-xl font-bold">
                   {courier.name}
                 </h3>
@@ -117,23 +102,14 @@ export default function CouriersPage() {
                 <span className="mt-5 inline-block font-semibold text-[#7A1717]">
                   Track Shipment →
                 </span>
-
               </Link>
-
             ))}
-
           </div>
-
         </div>
-
       </section>
 
-      {/* ================= INTERNATIONAL ================= */}
-
       <section className="border-t border-[#E5DCD0] bg-white px-6 py-16">
-
         <div className="mx-auto max-w-6xl">
-
           <h2 className="text-3xl font-bold">
             International Courier Tracking
           </h2>
@@ -145,15 +121,12 @@ export default function CouriersPage() {
           </p>
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
             {internationalCouriers.map((courier) => (
-
               <Link
                 key={courier.id}
                 href={`/couriers/${courier.id}`}
                 className="rounded-2xl border border-[#E5DCD0] bg-[#FFF8ED] p-6 transition hover:-translate-y-1 hover:border-[#7A1717] hover:shadow-lg"
               >
-
                 <h3 className="text-xl font-bold">
                   {courier.name}
                 </h3>
@@ -170,31 +143,20 @@ export default function CouriersPage() {
                 <span className="mt-5 inline-block font-semibold text-[#7A1717]">
                   Track Shipment →
                 </span>
-
               </Link>
-
             ))}
-
           </div>
-
         </div>
-
       </section>
 
-      {/* ================= WHY USE TRACKALLINONE ================= */}
-
       <section className="bg-[#FFF8ED] px-6 py-16">
-
         <div className="mx-auto max-w-5xl">
-
           <h2 className="text-center text-3xl font-bold">
             Track Shipments From Major Couriers
           </h2>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-
             <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
-
               <h3 className="text-xl font-bold">
                 Find Your Courier
               </h3>
@@ -203,11 +165,9 @@ export default function CouriersPage() {
                 Choose your courier from our growing directory of
                 major courier and postal services.
               </p>
-
             </div>
 
             <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
-
               <h3 className="text-xl font-bold">
                 Access Official Tracking
               </h3>
@@ -216,11 +176,9 @@ export default function CouriersPage() {
                 TrackAllInOne helps you quickly reach the courier's
                 official shipment tracking service.
               </p>
-
             </div>
 
             <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
-
               <h3 className="text-xl font-bold">
                 Check Shipment Status
               </h3>
@@ -229,19 +187,12 @@ export default function CouriersPage() {
                 Shipment status and tracking information are
                 provided directly by the relevant courier service.
               </p>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
 
-      {/* ================= FOOTER ================= */}
-
       <Footer />
-
     </main>
   );
 }

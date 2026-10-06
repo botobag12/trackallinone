@@ -1,5 +1,5 @@
 export default function robots() {
-  const baseUrl = "https://trackallinone.com";
+  const baseUrl = "https://www.trackallinone.com";
 
   return {
     rules: {

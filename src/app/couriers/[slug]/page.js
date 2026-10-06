@@ -29,7 +29,7 @@ export async function generateMetadata({ params }) {
 
   const description = `Track your ${courier.name} shipment and quickly access the official ${courier.name} tracking service through TrackAllInOne.`;
 
-  const canonicalUrl = `https://trackallinone.com/couriers/${courier.id}`;
+  const canonicalUrl = `https://www.trackallinone.com/couriers/${courier.id}`;
 
   return {
     title,
@@ -82,17 +82,10 @@ export default async function CourierPage({ params }) {
 
   return (
     <main className="min-h-screen bg-[#FFF8ED] text-[#111111]">
-
-      {/* ================= HEADER ================= */}
-
       <Header />
 
-      {/* ================= CONTENT ================= */}
-
       <section className="px-6 py-20">
-
         <div className="mx-auto max-w-4xl">
-
           <Link
             href="/couriers"
             className="font-medium text-[#7A1717] transition hover:text-[#941F1F]"
@@ -101,9 +94,6 @@ export default async function CourierPage({ params }) {
           </Link>
 
           <div className="mt-8 rounded-2xl border border-[#E5DCD0] bg-white p-8 shadow-sm md:p-12">
-
-            {/* ================= COURIER INTRO ================= */}
-
             <p className="font-semibold uppercase tracking-[0.15em] text-[#7A1717]">
               {courier.country}
             </p>
@@ -117,10 +107,7 @@ export default async function CourierPage({ params }) {
               {courier.name} shipment tracking service.
             </p>
 
-            {/* ================= TRACKING ================= */}
-
             <div className="mt-10 rounded-2xl bg-[#FFF8ED] p-6">
-
               <h2 className="text-2xl font-bold">
                 Track Your Shipment
               </h2>
@@ -141,13 +128,9 @@ export default async function CourierPage({ params }) {
               >
                 Track on {courier.name}
               </a>
-
             </div>
 
-            {/* ================= INFORMATION ================= */}
-
             <div className="mt-12">
-
               <h2 className="text-2xl font-bold">
                 About {courier.name} Tracking
               </h2>
@@ -165,19 +148,14 @@ export default async function CourierPage({ params }) {
                 official tracking service. Tracking information and
                 shipment status are provided by the courier itself.
               </p>
-
             </div>
 
-            {/* ================= HOW IT WORKS ================= */}
-
             <div className="mt-12">
-
               <h2 className="text-2xl font-bold">
                 How to Track Your {courier.name} Shipment
               </h2>
 
               <ol className="mt-5 space-y-3 text-[#625B55]">
-
                 <li>
                   <span className="font-semibold text-[#111111]">
                     1.
@@ -207,34 +185,22 @@ export default async function CourierPage({ params }) {
                   View the latest shipment information provided
                   by the courier.
                 </li>
-
               </ol>
-
             </div>
 
-            {/* ================= DISCLAIMER ================= */}
-
             <div className="mt-10 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-5">
-
               <p className="text-sm leading-6 text-[#625B55]">
                 TrackAllInOne is an independent tracking directory
                 and is not affiliated with {courier.name}. For the
-                most accurate shipment information, always rely on
-                the courier's official tracking system.
+                most accurate shipment information, always rely on the
+                courier's official tracking system.
               </p>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
 
-      {/* ================= FOOTER ================= */}
-
       <Footer />
-
     </main>
   );
 }
