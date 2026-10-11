@@ -44,6 +44,12 @@ export default function Header() {
             >
               Home
             </Link>
+             <Link
+              href="/guides"
+              className="transition hover:text-[#7A1717]"
+            >
+              Guides
+            </Link>
 
             <Link
               href="/couriers"

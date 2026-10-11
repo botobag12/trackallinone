@@ -147,6 +147,101 @@ export default function AboutPage() {
               </div>
 
             </div>
+                        {/* OUR TRACKING GUIDES AND COURIER SOLUTIONS */}
+            <div className="mt-12">
+
+              <h2 className="text-3xl font-bold">
+                Our Tracking Guides and Courier Solutions
+              </h2>
+
+              <p className="mt-5 leading-8 text-[#625B55]">
+                At TrackAllInOne, our goal goes beyond helping users
+                find shipment tracking websites. We aim to provide
+                practical resources and guidance that make courier
+                tracking easier for individuals, online shoppers,
+                sellers, and e-commerce businesses.
+              </p>
+
+              {/* COURIER TRACKING GUIDES */}
+              <div className="mt-8 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
+
+                <h3 className="text-xl font-bold">
+                  Courier Tracking Guides and Support
+                </h3>
+
+                <p className="mt-3 leading-7 text-[#625B55]">
+                  Our tracking guides help users understand how to
+                  track parcels, locate tracking numbers, interpret
+                  common shipment statuses, and troubleshoot
+                  frequently encountered tracking problems. We
+                  provide step-by-step information to help users
+                  navigate courier tracking systems and understand
+                  the delivery process more confidently.
+                </p>
+
+                <Link
+                  href="/guides"
+                  className="mt-4 inline-flex font-semibold text-[#7A1717] hover:underline"
+                >
+                  Explore Our Tracking Guides →
+                </Link>
+
+              </div>
+
+              {/* API INTEGRATION */}
+              <div className="mt-5 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
+
+                <h3 className="text-xl font-bold">
+                  Courier API Integration Information
+                </h3>
+
+                <p className="mt-3 leading-7 text-[#625B55]">
+                  For developers and businesses looking to connect
+                  their systems with courier services, we aim to
+                  provide educational information about courier APIs,
+                  integration requirements, shipment tracking
+                  workflows, and the technical considerations
+                  involved in connecting online platforms with
+                  logistics providers. Actual API access, credentials,
+                  and available features depend on each courier's
+                  official services and approval requirements.
+                </p>
+
+              </div>
+
+              {/* E-COMMERCE COURIER SOLUTIONS */}
+              <div className="mt-5 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
+
+                <h3 className="text-xl font-bold">
+                  Courier Solutions for E-Commerce Businesses
+                </h3>
+
+                <p className="mt-3 leading-7 text-[#625B55]">
+                  Choosing suitable delivery services is an important
+                  part of running an online store. Our educational
+                  resources aim to help e-commerce businesses
+                  understand courier service options, shipment
+                  booking processes, delivery tracking, shipping
+                  workflows, and the role of logistics integrations
+                  in managing online orders. Businesses can use
+                  these resources to learn how to evaluate courier
+                  providers and explore official services that fit
+                  their operational needs.
+                </p>
+
+              </div>
+
+              <p className="mt-6 leading-8 text-[#625B55]">
+                Whether you are an individual tracking a parcel, a
+                developer exploring logistics integrations, or an
+                online seller learning about courier services,
+                TrackAllInOne aims to be a useful starting point
+                for finding relevant information and official
+                courier resources.
+              </p>
+
+            </div>
+            
 
             {/* INDEPENDENT PLATFORM */}
             <div className="mt-12 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">

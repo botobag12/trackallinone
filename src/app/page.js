@@ -128,6 +128,21 @@ export default function Home() {
               className="w-full rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] px-4 py-4 outline-none transition focus:border-[#7A1717] focus:ring-2 focus:ring-[#7A1717]/20"
             />
 
+        {/* ================= GUIDES BUTTON ================= */}
+
+        <div className="mx-auto mt-8 max-w-3xl text-center">
+          <p className="mb-4 text-[#625B55]">
+            Need help tracking your parcel?
+          </p>
+
+          <a
+            href="/guides"
+            className="inline-flex items-center justify-center rounded-xl border-2 border-[#7A1717] bg-white px-8 py-3 font-bold text-[#7A1717] transition hover:bg-[#7A1717] hover:text-white"
+          >
+            Explore Tracking Guides →
+          </a>
+        </div>
+
 
             {/* Courier Dropdown */}
 
