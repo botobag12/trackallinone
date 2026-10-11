@@ -1,12 +1,14 @@
+
 export default function robots() {
-  const baseUrl = "https://www.trackallinone.com";
-
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-
-    sitemap: `${baseUrl}/sitemap.xml`,
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/studio/"],
+      },
+    ],
+    sitemap: "https://www.trackallinone.com/sitemap.xml",
+    host: "https://www.trackallinone.com",
   };
 }
