@@ -19,9 +19,7 @@ const ARTICLE_QUERY = `*[
   courierId,
   excerpt,
   mainImage {
-    asset-> {
-      url
-    },
+    asset->{ url },
     alt
   },
   publishedAt,
@@ -29,13 +27,8 @@ const ARTICLE_QUERY = `*[
   seoTitle,
   seoDescription,
   body,
-  author-> {
-    name
-  },
-  categories[]-> {
-    title,
-    "slug": slug.current
-  }
+  author->{ name },
+  categories[]->{ title, "slug": slug.current }
 }`;
 
 async function getArticle(courierId, slug) {
@@ -54,195 +47,186 @@ function formatDate(date) {
 
 export async function generateMetadata({ params }) {
   const { courier: courierId, slug } = await params;
-
   const courier = couriers.find((item) => item.id === courierId);
 
-  if (!courier) {
-    return { title: "Article Not Found | TrackAllInOne" };
-  }
+  if (!courier) return { title: "Article Not Found | TrackAllInOne" };
 
   const article = await getArticle(courierId, slug);
 
-  if (!article) {
-    return { title: "Article Not Found | TrackAllInOne" };
-  }
+  if (!article) return { title: "Article Not Found | TrackAllInOne" };
 
   const canonical =
     `https://www.trackallinone.com/guides/${courierId}/${article.slug}`;
 
+  const title = article.seoTitle || `${article.title} | TrackAllInOne`;
+  const description =
+    article.seoDescription ||
+    article.excerpt ||
+    `Read this ${courier.name} guide on TrackAllInOne.`;
+
   return {
-    title: article.seoTitle || `${article.title} | TrackAllInOne`,
-    description:
-      article.seoDescription ||
-      article.excerpt ||
-      `Read this ${courier.name} guide on TrackAllInOne.`,
-    alternates: {
-      canonical,
-    },
+    title,
+    description,
+    alternates: { canonical },
     openGraph: {
-      title: article.seoTitle || article.title,
-      description: article.seoDescription || article.excerpt || "",
+      title,
+      description,
       url: canonical,
       type: "article",
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt || article.publishedAt,
-      ...(article.mainImage?.asset?.url
-        ? {
-            images: [
-              {
-                url: article.mainImage.asset.url,
-                alt: article.mainImage.alt || article.title,
-              },
-            ],
-          }
-        : {}),
+      ...(article.mainImage?.asset?.url && {
+        images: [{
+          url: article.mainImage.asset.url,
+          alt: article.mainImage.alt || article.title,
+        }],
+      }),
     },
   };
 }
 
+const portableTextComponents = {
+  block: {
+    h2: ({ children }) => (
+      <h2 className={styles.articleH2}>{children}</h2>
+    ),
+    h3: ({ children }) => (
+      <h3 className={styles.articleH3}>{children}</h3>
+    ),
+    blockquote: ({ children }) => (
+      <blockquote className={styles.articleQuote}>
+        {children}
+      </blockquote>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => (
+      <ul className={styles.articleList}>{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className={styles.articleList}>{children}</ol>
+    ),
+  },
+  listItem: {
+    bullet: ({ children }) => <li>{children}</li>,
+    number: ({ children }) => <li>{children}</li>,
+  },
+  marks: {
+    link: ({ children, value }) => {
+      const href = value?.href || "#";
+      const external = /^https?:\/\//i.test(href);
+
+      return (
+        <a
+          href={href}
+          className={styles.articleLink}
+          {...(external
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+        >
+          {children}
+        </a>
+      );
+    },
+  },
+};
+
 export default async function ArticlePage({ params }) {
   const { courier: courierId, slug } = await params;
-
   const courier = couriers.find((item) => item.id === courierId);
 
-  if (!courier) {
-    notFound();
-  }
+  if (!courier) notFound();
 
   const article = await getArticle(courierId, slug);
 
-  if (!article) {
-    notFound();
-  }
+  if (!article) notFound();
 
   const imageUrl = article.mainImage?.asset?.url;
 
   return (
-    <main className={styles.page}>
-      <article className={styles.content}>
-        <nav
-          aria-label="Breadcrumb"
-          style={{ marginBottom: "1.5rem" }}
-        >
-          <Link href="/guides" className={styles.readLink}>
-            All guides
-          </Link>
-          {" / "}
-          <Link
-            href={`/guides/${courier.id}`}
-            className={styles.readLink}
-          >
-            {courier.name}
-          </Link>
-          {" / "}
-          <span>{article.title}</span>
+    <main className={styles.articlePage}>
+      <div className={styles.articleContainer}>
+        <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
+          <Link href="/guides">Guides</Link>
+          <span aria-hidden="true">/</span>
+          <Link href={`/guides/${courier.id}`}>{courier.name}</Link>
+          <span aria-hidden="true">/</span>
+          <span className={styles.breadcrumbCurrent}>
+            {article.title}
+          </span>
         </nav>
 
-        <header
-          style={{
-            maxWidth: "850px",
-            margin: "0 auto 2rem",
-          }}
-        >
-          <span className={styles.sectionEyebrow}>
-            {courier.name} GUIDE
+        <header className={styles.articleHeader}>
+          <span className={styles.articleEyebrow}>
+            {courier.name} TRACKING GUIDE
           </span>
 
-          <h1
-            style={{
-              fontSize: "clamp(2rem, 5vw, 3.5rem)",
-              marginTop: "1rem",
-            }}
-          >
-            {article.title}
-          </h1>
+          <h1 className={styles.articleTitle}>{article.title}</h1>
 
           {article.excerpt && (
-            <p
-              className={styles.heroText}
-              style={{ marginTop: "1rem" }}
-            >
-              {article.excerpt}
-            </p>
+            <p className={styles.articleExcerpt}>{article.excerpt}</p>
           )}
 
-          <p style={{ marginTop: "1rem" }}>
+          <div className={styles.articleMeta}>
             {article.author?.name && (
-              <>By {article.author.name} · </>
+              <span>By {article.author.name}</span>
             )}
-            Published {formatDate(article.publishedAt)}
+            {article.publishedAt && (
+              <span>Published {formatDate(article.publishedAt)}</span>
+            )}
             {article.updatedAt && (
-              <> · Updated {formatDate(article.updatedAt)}</>
+              <span>Updated {formatDate(article.updatedAt)}</span>
             )}
-          </p>
+          </div>
         </header>
 
         {imageUrl && (
-          <div
-            style={{
-              maxWidth: "1000px",
-              margin: "0 auto 2rem",
-            }}
-          >
+          <figure className={styles.articleFeatured}>
             <img
               src={imageUrl}
               alt={article.mainImage?.alt || article.title}
-              style={{
-                display: "block",
-                width: "100%",
-                height: "auto",
-                aspectRatio: "16 / 9",
-                objectFit: "cover",
-                borderRadius: "12px",
-              }}
             />
-          </div>
+          </figure>
         )}
 
-        <div
-          style={{
-            maxWidth: "850px",
-            margin: "0 auto",
-            lineHeight: 1.85,
-            overflowWrap: "anywhere",
-          }}
-        >
-          {article.body && (
-            <PortableText value={article.body} />
-          )}
-        </div>
+        <div className={styles.articleLayout}>
+          <div className={styles.articleBody}>
+            {article.body && (
+              <PortableText
+                value={article.body}
+                components={portableTextComponents}
+              />
+            )}
+          </div>
 
-        <section
-          style={{
-            maxWidth: "850px",
-            margin: "3rem auto 0",
-            paddingTop: "1.5rem",
-            borderTop: "1px solid #e5e5e5",
-          }}
-        >
-          <h2>More {courier.name} information</h2>
-
-          <p>
-            Explore more articles about {courier.name}, or visit the
-            courier guide page for its official tracking resource.
-          </p>
-
-          <div style={{ marginTop: "1rem" }}>
+          <aside className={styles.articleSidebar}>
+            <span className={styles.sidebarEyebrow}>KEEP EXPLORING</span>
+            <h2>More {courier.name} information</h2>
+            <p>
+              Explore more tracking guides and helpful information
+              about {courier.name}.
+            </p>
             <Link
               href={`/guides/${courier.id}`}
-              className={styles.readLink}
+              className={styles.sidebarButton}
             >
               More {courier.name} guides →
             </Link>
-          </div>
-
-          <div style={{ marginTop: "1rem" }}>
-            <Link href="/guides" className={styles.readLink}>
-              ← Browse all couriers
+            <Link href="/guides" className={styles.sidebarTextLink}>
+              Browse all tracking guides
             </Link>
-          </div>
-        </section>
-      </article>
+          </aside>
+        </div>
+
+        <div className={styles.articleBottomNav}>
+          <Link href={`/guides/${courier.id}`} className={styles.readLink}>
+            ← More {courier.name} guides
+          </Link>
+          <Link href="/guides" className={styles.readLink}>
+            All tracking guides →
+          </Link>
+        </div>
+      </div>
     </main>
   );
 }
