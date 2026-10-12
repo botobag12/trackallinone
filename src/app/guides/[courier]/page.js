@@ -1,4 +1,3 @@
-
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { client } from "../../../sanity/lib/client";
@@ -16,7 +15,13 @@ const ARTICLES_QUERY = `*[
   title,
   "slug": slug.current,
   excerpt,
-  publishedAt
+  publishedAt,
+  mainImage {
+    alt,
+    asset-> {
+      url
+    }
+  }
 }`;
 
 async function getCourierArticles(courierId) {
@@ -91,7 +96,7 @@ export default async function CourierGuidePage({ params }) {
         </div>
       </section>
 
-      {/* Published articles */}
+      {/* Published article cards */}
       <section className={styles.content}>
         <div className={styles.sectionHeading}>
           <div>
@@ -115,32 +120,68 @@ export default async function CourierGuidePage({ params }) {
         {articles.length > 0 ? (
           <div className={styles.grid}>
             {articles.map((article) => (
-              <article className={styles.card} key={article._id}>
-                <div className={styles.cardBody}>
+              <article
+                className={styles.articleCard}
+                key={article._id}
+              >
+                {/* Featured image thumbnail */}
+                <Link
+                  href={`/guides/${courier.id}/${article.slug}`}
+                  className={styles.thumbnailWrap}
+                  aria-label={`Read ${article.title}`}
+                >
+                  {article.mainImage?.asset?.url ? (
+                    <img
+                      src={article.mainImage.asset.url}
+                      alt={
+                        article.mainImage.alt ||
+                        `Featured image for ${article.title}`
+                      }
+                      className={styles.thumbnail}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className={styles.thumbnailPlaceholder}>
+                      <span>{courier.name}</span>
+                      <span>Tracking Guide</span>
+                    </div>
+                  )}
+                </Link>
+
+                {/* Article information */}
+                <div className={styles.articleCardBody}>
                   <div className={styles.cardMeta}>
                     <span className={styles.categoryTag}>
                       {courier.name}
                     </span>
+
+                    <span className={styles.articleDate}>
+                      {formatDate(article.publishedAt)}
+                    </span>
                   </div>
 
-                  <h3>{article.title}</h3>
+                  <h3 className={styles.articleTitle}>
+                    <Link
+                      href={`/guides/${courier.id}/${article.slug}`}
+                    >
+                      {article.title}
+                    </Link>
+                  </h3>
 
                   {article.excerpt && (
-                    <p className={styles.excerpt}>
+                    <p className={styles.articleExcerpt}>
                       {article.excerpt}
                     </p>
                   )}
 
-                  <p className={styles.excerpt}>
-                    Published {formatDate(article.publishedAt)}
-                  </p>
-
-                  <Link
-                    href={`/guides/${courier.id}/${article.slug}`}
-                    className={styles.readLink}
-                  >
-                    Read guide <span aria-hidden="true">→</span>
-                  </Link>
+                  <div className={styles.articleCardFooter}>
+                    <Link
+                      href={`/guides/${courier.id}/${article.slug}`}
+                      className={styles.readLink}
+                    >
+                      Read Guide <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
                 </div>
               </article>
             ))}
@@ -155,39 +196,9 @@ export default async function CourierGuidePage({ params }) {
           </div>
         )}
 
-        {/* Official website and country — at the bottom */}
-        <section
-          style={{
-            marginTop: "3rem",
-            padding: "1.5rem",
-            borderRadius: "12px",
-            border: "1px solid #e5e5e5",
-          }}
-        >
-          <span className={styles.sectionEyebrow}>
-            OFFICIAL COURIER RESOURCE
-          </span>
-
-          <h2 style={{ marginTop: "0.5rem" }}>
-            {courier.name} Official Website
-          </h2>
-
-          <p style={{ marginTop: "0.5rem", marginBottom: "1rem" }}>
-            Country or service region: {courier.country}
-          </p>
-
-          <a
-            href={officialTrackingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.ctaButton}
-          >
-            Visit official tracking website
-            <span aria-hidden="true"> ↗</span>
-          </a>
-        </section>
-
-        <div style={{ marginTop: "2rem" }}>
+        {/* Official courier resource */}
+       
+        <div className={styles.backLink}>
           <Link href="/guides" className={styles.readLink}>
             ← Back to all courier guides
           </Link>

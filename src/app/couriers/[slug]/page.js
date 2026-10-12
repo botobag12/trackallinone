@@ -199,6 +199,35 @@ export default async function CourierPage({ params }) {
           </div>
         </div>
       </section>
+  
+{courier.regionalLinks?.length > 0 && (
+  <section className="mt-8 border-t border-[#E5DCD0] pt-7">
+    <h2 className="text-xl font-bold text-[#111111]">
+      Choose Your DPD Website
+    </h2>
+
+    <p className="mt-2 text-[#625B55]">
+      Select the official regional website that matches your shipment.
+      Tracking and support options may differ by country.
+    </p>
+
+    <ul className="mt-4 space-y-3">
+      {courier.regionalLinks.map((link) => (
+        <li key={link.url}>
+          <a
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 font-semibold text-[#7A1717] underline underline-offset-4 hover:text-[#111111]"
+          >
+            {link.label} ↗
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
 
       <Footer />
     </main>
