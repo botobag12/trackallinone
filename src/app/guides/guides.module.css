@@ -1138,3 +1138,23 @@
     transform: none;
   }
 }
+.articleInlineImage {
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.articleInlineImage img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.articleInlineImage figcaption {
+  margin-top: 0.5rem;
+  color: #625b55;
+  font-size: 0.875rem;
+  text-align: center;
+}

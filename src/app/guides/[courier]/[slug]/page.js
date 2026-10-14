@@ -1,4 +1,3 @@
-
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PortableText } from "next-sanity";
@@ -26,7 +25,15 @@ const ARTICLE_QUERY = `*[
   updatedAt,
   seoTitle,
   seoDescription,
-  body,
+  body[]{
+    ...,
+    _type == "image" => {
+      ...,
+      "asset": asset->{
+        url
+      }
+    }
+  },
   author->{ name },
   categories[]->{ title, "slug": slug.current }
 }`;
@@ -49,11 +56,15 @@ export async function generateMetadata({ params }) {
   const { courier: courierId, slug } = await params;
   const courier = couriers.find((item) => item.id === courierId);
 
-  if (!courier) return { title: "Article Not Found | TrackAllInOne" };
+  if (!courier) {
+    return { title: "Article Not Found | TrackAllInOne" };
+  }
 
   const article = await getArticle(courierId, slug);
 
-  if (!article) return { title: "Article Not Found | TrackAllInOne" };
+  if (!article) {
+    return { title: "Article Not Found | TrackAllInOne" };
+  }
 
   const canonical =
     `https://www.trackallinone.com/guides/${courierId}/${article.slug}`;
@@ -76,16 +87,40 @@ export async function generateMetadata({ params }) {
       publishedTime: article.publishedAt,
       modifiedTime: article.updatedAt || article.publishedAt,
       ...(article.mainImage?.asset?.url && {
-        images: [{
-          url: article.mainImage.asset.url,
-          alt: article.mainImage.alt || article.title,
-        }],
+        images: [
+          {
+            url: article.mainImage.asset.url,
+            alt: article.mainImage.alt || article.title,
+          },
+        ],
       }),
     },
   };
 }
 
 const portableTextComponents = {
+  types: {
+    image: ({ value }) => {
+      const imageUrl = value?.asset?.url;
+
+      if (!imageUrl) return null;
+
+      return (
+        <figure className={styles.articleInlineImage}>
+          <img
+            src={imageUrl}
+            alt={value.alt || "Article image"}
+            loading="lazy"
+          />
+
+          {value.alt && (
+            <figcaption>{value.alt}</figcaption>
+          )}
+        </figure>
+      );
+    },
+  },
+
   block: {
     h2: ({ children }) => (
       <h2 className={styles.articleH2}>{children}</h2>
@@ -99,6 +134,7 @@ const portableTextComponents = {
       </blockquote>
     ),
   },
+
   list: {
     bullet: ({ children }) => (
       <ul className={styles.articleList}>{children}</ul>
@@ -107,10 +143,12 @@ const portableTextComponents = {
       <ol className={styles.articleList}>{children}</ol>
     ),
   },
+
   listItem: {
     bullet: ({ children }) => <li>{children}</li>,
     number: ({ children }) => <li>{children}</li>,
   },
+
   marks: {
     link: ({ children, value }) => {
       const href = value?.href || "#";
@@ -171,9 +209,11 @@ export default async function ArticlePage({ params }) {
             {article.author?.name && (
               <span>By {article.author.name}</span>
             )}
+
             {article.publishedAt && (
               <span>Published {formatDate(article.publishedAt)}</span>
             )}
+
             {article.updatedAt && (
               <span>Updated {formatDate(article.updatedAt)}</span>
             )}
@@ -201,17 +241,21 @@ export default async function ArticlePage({ params }) {
 
           <aside className={styles.articleSidebar}>
             <span className={styles.sidebarEyebrow}>KEEP EXPLORING</span>
+
             <h2>More {courier.name} information</h2>
+
             <p>
               Explore more tracking guides and helpful information
               about {courier.name}.
             </p>
+
             <Link
               href={`/guides/${courier.id}`}
               className={styles.sidebarButton}
             >
               More {courier.name} guides →
             </Link>
+
             <Link href="/guides" className={styles.sidebarTextLink}>
               Browse all tracking guides
             </Link>
@@ -219,9 +263,13 @@ export default async function ArticlePage({ params }) {
         </div>
 
         <div className={styles.articleBottomNav}>
-          <Link href={`/guides/${courier.id}`} className={styles.readLink}>
+          <Link
+            href={`/guides/${courier.id}`}
+            className={styles.readLink}
+          >
             ← More {courier.name} guides
           </Link>
+
           <Link href="/guides" className={styles.readLink}>
             All tracking guides →
           </Link>
