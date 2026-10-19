@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import couriers from "@/data/couriers";
@@ -13,9 +14,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
 
-  const courier = couriers.find(
-    (item) => item.id === slug
-  );
+  const courier = couriers.find((item) => item.id === slug);
 
   if (!courier) {
     return {
@@ -27,23 +26,23 @@ export async function generateMetadata({ params }) {
 
   const title = `${courier.name} Tracking | TrackAllInOne`;
 
-  const description = `Track your ${courier.name} shipment and quickly access the official ${courier.name} tracking service through TrackAllInOne.`;
+  const description =
+    `Learn about ${courier.name} tracking, find your shipment number, ` +
+    "and use the TrackAllInOne homepage tracking tool where supported.";
 
-  const canonicalUrl = `https://www.trackallinone.com/couriers/${courier.id}`;
+  const canonicalUrl =
+    `https://www.trackallinone.com/couriers/${courier.id}`;
 
   return {
     title,
     description,
-
     alternates: {
       canonical: canonicalUrl,
     },
-
     robots: {
       index: true,
       follow: true,
     },
-
     openGraph: {
       title,
       description,
@@ -59,7 +58,6 @@ export async function generateMetadata({ params }) {
         },
       ],
     },
-
     twitter: {
       card: "summary_large_image",
       title,
@@ -72,9 +70,7 @@ export async function generateMetadata({ params }) {
 export default async function CourierPage({ params }) {
   const { slug } = await params;
 
-  const courier = couriers.find(
-    (item) => item.id === slug
-  );
+  const courier = couriers.find((item) => item.id === slug);
 
   if (!courier) {
     notFound();
@@ -103,8 +99,9 @@ export default async function CourierPage({ params }) {
             </h1>
 
             <p className="mt-5 text-lg leading-8 text-[#625B55]">
-              Use TrackAllInOne to access the official{" "}
-              {courier.name} shipment tracking service.
+              Find information about {courier.name} shipments
+              and return to TrackAllInOne to submit a tracking
+              request for supported shipments.
             </p>
 
             <div className="mt-10 rounded-2xl bg-[#FFF8ED] p-6">
@@ -112,22 +109,27 @@ export default async function CourierPage({ params }) {
                 Track Your Shipment
               </h2>
 
-              <p className="mt-3 text-[#625B55]">
-                Enter your tracking number on the official{" "}
-                {courier.name} tracking service.
+              <p className="mt-3 leading-7 text-[#625B55]">
+                You can start a tracking request from the
+                TrackAllInOne homepage. Enter your tracking number
+                and select the appropriate courier if it is
+                available in the tracking tool.
               </p>
 
-              <a
-                href={courier.trackingUrl.replace(
-                  "{trackingNumber}",
-                  ""
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-block rounded-xl bg-[#7A1717] px-7 py-4 font-bold text-white transition hover:bg-[#941F1F]"
+              <Link
+                href="/"
+                className="mt-6 inline-flex rounded-xl bg-[#7A1717] px-7 py-4 font-bold text-white transition hover:bg-[#941F1F]"
               >
-                Track on {courier.name}
-              </a>
+                Track on TrackAllInOne →
+              </Link>
+
+              <p className="mt-4 text-sm leading-6 text-[#625B55]">
+                Live tracking availability depends on the courier
+                and our tracking provider's coverage. A courier
+                appearing in this directory does not guarantee
+                that its shipments can be tracked through the
+                homepage tool.
+              </p>
             </div>
 
             <div className="mt-12">
@@ -136,98 +138,85 @@ export default async function CourierPage({ params }) {
               </h2>
 
               <p className="mt-4 leading-8 text-[#625B55]">
-                {courier.name} provides shipment tracking services
-                for customers who want to check the progress of
-                their deliveries. Your tracking number can normally
-                be found on your shipping receipt, order confirmation,
-                email, SMS notification, or shipping label.
+                A tracking number is a reference used to identify
+                a shipment within a courier's tracking system.
+                You can normally find it on a shipping receipt,
+                order confirmation, email, SMS notification, or
+                shipping label, depending on how the shipment was
+                booked.
               </p>
 
               <p className="mt-4 leading-8 text-[#625B55]">
-                TrackAllInOne provides a convenient way to find the
-                official tracking service. Tracking information and
-                shipment status are provided by the courier itself.
+                TrackAllInOne provides courier information and a
+                tracking tool for supported shipments. Available
+                shipment statuses and tracking events depend on
+                the information returned by the tracking provider.
+                Results may be delayed, incomplete, or unavailable.
               </p>
             </div>
 
             <div className="mt-12">
               <h2 className="text-2xl font-bold">
-                How to Track Your {courier.name} Shipment
+                How to Start Tracking a {courier.name} Shipment
               </h2>
 
-              <ol className="mt-5 space-y-3 text-[#625B55]">
+              <ol className="mt-5 space-y-3 leading-7 text-[#625B55]">
                 <li>
                   <span className="font-semibold text-[#111111]">
                     1.
                   </span>{" "}
-                  Find your {courier.name} tracking number.
+                  Find your shipment tracking number on your
+                  receipt, order confirmation, or shipping label.
                 </li>
 
                 <li>
                   <span className="font-semibold text-[#111111]">
                     2.
                   </span>{" "}
-                  Click the official tracking button above.
+                  Return to the TrackAllInOne homepage using
+                  the button above.
                 </li>
 
                 <li>
                   <span className="font-semibold text-[#111111]">
                     3.
                   </span>{" "}
-                  Enter your tracking number on the courier's
-                  official website.
+                  Enter your tracking number and select the
+                  matching courier if it is supported by the
+                  tracking tool.
                 </li>
 
                 <li>
                   <span className="font-semibold text-[#111111]">
                     4.
                   </span>{" "}
-                  View the latest shipment information provided
-                  by the courier.
+                  Submit the request and review the shipment
+                  information returned, if available.
                 </li>
               </ol>
+
+              <Link
+                href="/"
+                className="mt-6 inline-flex font-semibold text-[#7A1717] hover:underline"
+              >
+                Return to the TrackAllInOne homepage →
+              </Link>
             </div>
 
             <div className="mt-10 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-5">
               <p className="text-sm leading-6 text-[#625B55]">
-                TrackAllInOne is an independent tracking directory
-                and is not affiliated with {courier.name}. For the
-                most accurate shipment information, always rely on the
-                courier's official tracking system.
+                TrackAllInOne is an independent tracking website
+                and is not affiliated with {courier.name} unless
+                expressly stated otherwise. Courier names and
+                trademarks belong to their respective owners.
+                TrackAllInOne does not guarantee shipment status
+                or delivery times. For official confirmation,
+                contact the relevant courier.
               </p>
             </div>
           </div>
         </div>
       </section>
-  
-{courier.regionalLinks?.length > 0 && (
-  <section className="mt-8 border-t border-[#E5DCD0] pt-7">
-    <h2 className="text-xl font-bold text-[#111111]">
-      Choose Your DPD Website
-    </h2>
-
-    <p className="mt-2 text-[#625B55]">
-      Select the official regional website that matches your shipment.
-      Tracking and support options may differ by country.
-    </p>
-
-    <ul className="mt-4 space-y-3">
-      {courier.regionalLinks.map((link) => (
-        <li key={link.url}>
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 font-semibold text-[#7A1717] underline underline-offset-4 hover:text-[#111111]"
-          >
-            {link.label} ↗
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
-)}
-
 
       <Footer />
     </main>

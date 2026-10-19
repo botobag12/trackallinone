@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -5,23 +6,27 @@ import Header from "@/components/Header";
 export const metadata = {
   title: "Privacy Policy | TrackAllInOne",
   description:
-    "Read the TrackAllInOne privacy policy and learn how information is handled when you use our website.",
+    "Learn how TrackAllInOne handles tracking numbers, technical information, contact messages, third-party tracking services, and privacy.",
+  alternates: {
+    canonical: "https://www.trackallinone.com/privacy",
+  },
+  openGraph: {
+    title: "Privacy Policy | TrackAllInOne",
+    description:
+      "Understand how information may be processed when you use TrackAllInOne's shipment tracking tools and website.",
+    url: "https://www.trackallinone.com/privacy",
+    siteName: "TrackAllInOne",
+    type: "website",
+  },
 };
 
 export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-[#FFF8ED] text-[#111111]">
-
-      {/* HEADER */}
-
-        <Header />
-
-      {/* HERO */}
+      <Header />
 
       <section className="px-6 py-16 text-center">
-
         <div className="mx-auto max-w-4xl">
-
           <p className="font-semibold uppercase tracking-[0.2em] text-[#7A1717]">
             Legal
           </p>
@@ -30,243 +35,281 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-[#625B55]">
-            Learn how TrackAllInOne handles information when you
-            use our website and courier tracking services.
+          <p className="mx-auto mt-5 max-w-2xl leading-7 text-[#625B55]">
+            Learn how information may be handled when you visit
+            TrackAllInOne or submit a shipment tracking request.
           </p>
-
         </div>
-
       </section>
 
-      {/* CONTENT */}
-
       <section className="px-6 pb-20">
-
         <div className="mx-auto max-w-4xl">
-
           <article className="rounded-2xl border border-[#E5DCD0] bg-white p-8 shadow-sm md:p-12">
-
             <p className="text-sm text-[#625B55]">
-              Last updated: October 2026
+              Last updated: October 18, 2026
             </p>
 
-            {/* INTRODUCTION */}
-
             <section className="mt-8">
-
-              <h2 className="text-2xl font-bold">
-                1. Introduction
-              </h2>
-
+              <h2 className="text-2xl font-bold">1. Introduction</h2>
               <p className="mt-4 leading-8 text-[#625B55]">
-                Welcome to TrackAllInOne. We respect your privacy
-                and aim to be transparent about how information may
-                be handled when you use our website.
+                TrackAllInOne operates at
+                {" "}
+                <a
+                  href="https://www.trackallinone.com"
+                  className="font-medium text-[#7A1717] hover:underline"
+                >
+                  www.trackallinone.com
+                </a>
+                . This Privacy Policy explains how information may
+                be processed when you visit our website, submit
+                tracking requests, use available features, or
+                contact us.
               </p>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                This Privacy Policy explains the general types of
-                information that may be collected, how that
-                information may be used, and the choices available
-                to users.
+                Please read this policy together with our Terms
+                &amp; Conditions. The specific information processed
+                may depend on the features you use and the
+                third-party services enabled on the website.
               </p>
-
             </section>
 
-            {/* INFORMATION */}
-
             <section className="mt-10">
-
               <h2 className="text-2xl font-bold">
-                2. Information We May Collect
+                2. Information We May Process
               </h2>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                Depending on how you use TrackAllInOne, certain
-                information may be collected automatically or
-                provided voluntarily.
+                Depending on your interaction with the website,
+                information may include:
               </p>
-
               <ul className="mt-4 list-disc space-y-3 pl-6 leading-7 text-[#625B55]">
-
                 <li>
-                  Basic technical information such as browser type,
-                  device type, operating system, and approximate
-                  usage information.
+                  <strong>Tracking information:</strong> the
+                  tracking number and courier selection you submit
+                  when requesting shipment information.
                 </li>
-
                 <li>
-                  Information provided voluntarily when contacting
-                  us, such as your name and email address.
+                  <strong>Technical information:</strong> information
+                  that may be recorded by our hosting or security
+                  services, such as IP address, browser details,
+                  device information, request time, and diagnostic
+                  logs.
                 </li>
-
                 <li>
-                  Website usage information that may help us
-                  understand how visitors use TrackAllInOne.
+                  <strong>Messages you send us:</strong> information
+                  you choose to provide when contacting us, such
+                  as your email address and the contents of your
+                  message.
                 </li>
-
+                <li>
+                  <strong>Usage information:</strong> if analytics
+                  tools are enabled, information about how visitors
+                  use the website may be processed by those tools.
+                </li>
               </ul>
-
+              <p className="mt-4 leading-8 text-[#625B55]">
+                The exact information collected depends on the
+                website configuration and the services in use.
+                We do not ask users to submit payment details or
+                account passwords through the tracking form.
+              </p>
             </section>
 
-            {/* TRACKING NUMBERS */}
-
             <section className="mt-10">
-
               <h2 className="text-2xl font-bold">
-                3. Tracking Numbers
+                3. How Tracking Requests Work
               </h2>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                TrackAllInOne is designed to help users access
-                official courier tracking services. Tracking
-                information entered on TrackAllInOne may be used
-                to direct users to the appropriate courier's
-                tracking service.
+                When you submit a tracking number through the
+                TrackAllInOne tracking tool, the website sends
+                the tracking request to our tracking provider so
+                that it can retrieve available shipment information.
+                The provider may process the tracking number and
+                courier details to fulfil the request.
               </p>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                Users should avoid entering passwords, payment
-                information, or other sensitive personal
-                information into tracking fields.
+                The returned information may include a shipment
+                status and tracking events. Results depend on
+                provider coverage and the data available from
+                the relevant courier systems.
               </p>
-
+              <p className="mt-4 leading-8 text-[#625B55]">
+                We do not intentionally request unrelated sensitive
+                information for parcel tracking. Please submit only
+                the information needed to identify your shipment
+                and avoid entering passwords, payment information,
+                or other sensitive details in tracking fields.
+              </p>
             </section>
 
-            {/* COOKIES */}
-
             <section className="mt-10">
-
               <h2 className="text-2xl font-bold">
-                4. Cookies and Similar Technologies
+                4. How We May Use Information
               </h2>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                TrackAllInOne may use cookies or similar
-                technologies in the future to improve website
-                functionality, understand website usage, or
-                support services such as analytics and
-                advertising.
+                Information may be used, where applicable, to:
               </p>
-
-              <p className="mt-4 leading-8 text-[#625B55]">
-                If such technologies are introduced, this Privacy
-                Policy may be updated to explain their use.
-              </p>
-
+              <ul className="mt-4 list-disc space-y-3 pl-6 leading-7 text-[#625B55]">
+                <li>Process tracking requests and display results.</li>
+                <li>
+                  Maintain, troubleshoot, and protect the website.
+                </li>
+                <li>
+                  Respond to messages and questions sent to us.
+                </li>
+                <li>
+                  Diagnose technical errors and prevent abuse.
+                </li>
+                <li>
+                  Understand website performance if analytics
+                  services are enabled.
+                </li>
+                <li>
+                  Support advertising if advertising services are
+                  enabled on the website.
+                </li>
+              </ul>
             </section>
 
-            {/* THIRD PARTY SERVICES */}
-
             <section className="mt-10">
-
               <h2 className="text-2xl font-bold">
-                5. Third-Party Services
+                5. Third-Party Providers
               </h2>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                TrackAllInOne may link to or interact with
-                third-party services, including courier and postal
-                websites.
+                TrackAllInOne relies on a third-party tracking
+                provider to process supported tracking requests.
+                Hosting, security, analytics, or advertising
+                providers may also process information if those
+                services are configured on the website.
               </p>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                When you leave TrackAllInOne and visit a
-                third-party website, that website's own privacy
-                policy and terms may apply. We recommend reviewing
-                the policies of those services before providing
-                personal information.
+                These providers may handle information under their
+                own terms, privacy policies, and service agreements.
+                Their data handling practices, retention periods,
+                and processing locations may differ from ours.
+                Review the relevant provider's privacy information
+                when you need details about its practices.
               </p>
-
             </section>
 
-            {/* DATA SECURITY */}
-
             <section className="mt-10">
-
               <h2 className="text-2xl font-bold">
-                6. Data Security
+                6. Cookies, Analytics, and Advertising
               </h2>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                We aim to use reasonable measures to protect
-                information handled through TrackAllInOne.
-                However, no website or online transmission can be
-                guaranteed to be completely secure.
+                Cookies and similar technologies may be used by
+                the website or by third-party services to support
+                functionality, security, analytics, or advertising,
+                where those services are enabled.
               </p>
-
+              <p className="mt-4 leading-8 text-[#625B55]">
+                The use of these technologies depends on the
+                website's current configuration. If analytics
+                or advertising tools are introduced or changed,
+                this policy should be updated to reflect the
+                actual services and applicable consent requirements.
+                You can also review the cookie and privacy controls
+                provided by your browser.
+              </p>
             </section>
 
-            {/* CHILDREN */}
+            <section className="mt-10">
+              <h2 className="text-2xl font-bold">
+                7. Data Retention and Security
+              </h2>
+              <p className="mt-4 leading-8 text-[#625B55]">
+                Information should be retained only for as long
+                as reasonably necessary for the purpose for which
+                it was processed, including responding to enquiries,
+                maintaining security, troubleshooting, and meeting
+                applicable legal obligations.
+              </p>
+              <p className="mt-4 leading-8 text-[#625B55]">
+                Actual retention periods may depend on our hosting
+                provider, tracking provider, and other configured
+                services. We aim to use reasonable safeguards to
+                protect information, but no website, system, or
+                internet transmission can be guaranteed completely
+                secure.
+              </p>
+            </section>
 
             <section className="mt-10">
-
               <h2 className="text-2xl font-bold">
-                7. Children's Privacy
+                8. External Websites
               </h2>
+              <p className="mt-4 leading-8 text-[#625B55]">
+                TrackAllInOne may reference or link to websites
+                operated by other organisations. Once you visit
+                an external website, its privacy policy and terms
+                apply to your interactions there. We do not control
+                the privacy practices of those websites.
+              </p>
+            </section>
 
+            <section className="mt-10">
+              <h2 className="text-2xl font-bold">
+                9. Your Choices and Privacy Requests
+              </h2>
+              <p className="mt-4 leading-8 text-[#625B55]">
+                You can choose not to submit a tracking number
+                or contact message. You can also use your browser
+                settings to manage cookies where available.
+              </p>
+              <p className="mt-4 leading-8 text-[#625B55]">
+                If you have a question or a request concerning
+                information you have provided to us, please contact
+                us. We will review the request and respond as
+                appropriate under applicable law. Some information
+                may be retained when required for security,
+                operational, or legal reasons.
+              </p>
+            </section>
+
+            <section className="mt-10">
+              <h2 className="text-2xl font-bold">
+                10. Children's Privacy
+              </h2>
               <p className="mt-4 leading-8 text-[#625B55]">
                 TrackAllInOne is a general-purpose website and is
                 not specifically directed toward children. We do
-                not knowingly seek to collect unnecessary personal
-                information from children.
+                not knowingly seek to collect personal information
+                from children unnecessarily. If you believe a child
+                has provided personal information to us, please
+                contact us so we can review the situation.
               </p>
-
             </section>
 
-            {/* CHANGES */}
-
             <section className="mt-10">
-
               <h2 className="text-2xl font-bold">
-                8. Changes to This Privacy Policy
+                11. Changes to This Policy
               </h2>
-
               <p className="mt-4 leading-8 text-[#625B55]">
-                We may update this Privacy Policy from time to time
-                as TrackAllInOne develops or as new services and
-                technologies are introduced.
+                We may update this Privacy Policy when our website,
+                tracking integrations, or data practices change.
+                The revised version will be published on this page
+                with an updated date. Please review this page
+                periodically.
               </p>
-
-              <p className="mt-4 leading-8 text-[#625B55]">
-                Any updated version will be published on this page
-                with a revised update date.
-              </p>
-
             </section>
 
-            {/* CONTACT */}
-
             <section className="mt-10">
-
-              <h2 className="text-2xl font-bold">
-                9. Contact Us
-              </h2>
-
+              <h2 className="text-2xl font-bold">12. Contact Us</h2>
               <p className="mt-4 leading-8 text-[#625B55]">
-                If you have questions about this Privacy Policy,
-                please visit our Contact page.
+                For privacy questions or requests, please use
+                our Contact page.
               </p>
-
               <Link
                 href="/contact"
-                className="mt-5 inline-block font-semibold text-[#7A1717] hover:underline"
+                className="mt-5 inline-flex font-semibold text-[#7A1717] hover:underline"
               >
                 Contact TrackAllInOne →
               </Link>
-
             </section>
-
           </article>
-
         </div>
-
       </section>
 
-      {/* FOOTER */}
-        <Footer />
-
+      <Footer />
     </main>
   );
 }
