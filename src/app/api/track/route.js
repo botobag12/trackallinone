@@ -1,6 +1,7 @@
 
 export async function POST(request) {
   try {
+    // 1. Get the API key from server environment variables
     const apiKey = process.env.TRACKING_API_KEY;
 
     if (!apiKey) {
@@ -13,6 +14,7 @@ export async function POST(request) {
       );
     }
 
+    // 2. Read and validate the incoming request
     let body;
 
     try {
@@ -42,16 +44,13 @@ export async function POST(request) {
       );
     }
 
-    const payload = { trackingNumber };
+    // 3. Send only the tracking number.
+    // TrackMyParcel will automatically detect the courier.
+    const payload = {
+      trackingNumber,
+    };
 
-    // Include the courier only when one is supplied.
-    if (
-      typeof body?.carrier === "string" &&
-      /^[a-z0-9_-]{1,50}$/i.test(body.carrier)
-    ) {
-      payload.carrier = body.carrier;
-    }
-
+    // 4. Send the request to TrackMyParcel
     let upstream;
 
     try {
@@ -87,15 +86,16 @@ export async function POST(request) {
       );
     }
 
+    // 5. Read the provider response
     const result = await upstream.json().catch(() => null);
 
+    // 6. Handle provider HTTP errors
     if (!upstream.ok) {
       console.error(
         "TrackMyParcel HTTP status:",
         upstream.status
       );
 
-      // Log the error code only; avoid exposing provider details.
       console.error(
         "TrackMyParcel error code:",
         result?.error?.code || "UNKNOWN_ERROR"
@@ -144,21 +144,25 @@ export async function POST(request) {
       );
     }
 
+    // 7. Validate the provider response
     if (!result || typeof result.success !== "boolean") {
       return Response.json(
         {
           success: false,
-          message: "Unexpected response from the tracking service.",
+          message:
+            "Unexpected response from the tracking service.",
         },
         { status: 502 }
       );
     }
 
+    // 8. Return the tracking result to the frontend
     return Response.json(result, {
       headers: {
         "Cache-Control": "no-store",
       },
     });
+
   } catch (error) {
     console.error(
       "Tracking route error:",
@@ -168,7 +172,8 @@ export async function POST(request) {
     return Response.json(
       {
         success: false,
-        message: "Unable to process your tracking request.",
+        message:
+          "Unable to process your tracking request.",
       },
       { status: 500 }
     );

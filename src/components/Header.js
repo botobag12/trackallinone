@@ -1,7 +1,9 @@
+
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
+import styles from "../app/guides/guides.module.css";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -10,13 +12,12 @@ export default function Header() {
     setMenuOpen(false);
   };
 
+  const trackButtonClass =
+    "rounded-lg bg-[#7A1717] px-6 py-2.5 font-semibold text-white transition hover:bg-[#5F1010]";
+
   return (
     <header className="border-b border-[#E5DCD0] bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-
-        {/* =========================
-            HEADER BAR
-        ========================== */}
         <div className="flex min-h-[72px] items-center justify-between">
 
           {/* LOGO */}
@@ -32,52 +33,50 @@ export default function Header() {
             />
           </Link>
 
-          {/* =========================
-              DESKTOP NAVIGATION
-              Hidden on mobile
-          ========================== */}
+          {/* DESKTOP NAVIGATION */}
           <nav className="hidden items-center gap-8 font-medium md:flex">
+           <Link
+              href="/"
+               className={`${styles.guideNavbarLink} existing-classes`}
+>
+               Home
+            </Link>
 
             <Link
-              href="/"
-              className="transition hover:text-[#7A1717]"
-            >
-              Home
-            </Link>
-             <Link
               href="/guides"
-              className="transition hover:text-[#7A1717]"
-            >
-              Guides
+               className={`${styles.guideNavbarLink} existing-classes`}
+>
+               Guides
             </Link>
 
             <Link
               href="/couriers"
-              className="transition hover:text-[#7A1717]"
-            >
-              Couriers
+               className={`${styles.guideNavbarLink} existing-classes`}
+>
+               Couriers
             </Link>
 
             <Link
               href="/about"
-              className="transition hover:text-[#7A1717]"
-            >
-              About
+               className={`${styles.guideNavbarLink} existing-classes`}
+>
+               About
             </Link>
 
             <Link
               href="/contact"
-              className="transition hover:text-[#7A1717]"
-            >
-              Contact
+               className={`${styles.guideNavbarLink} existing-classes`}
+>
+               Contact
             </Link>
 
+            {/* TRACK BUTTON */}
+            <Link href="/#tracking" className={trackButtonClass}>
+              Track
+            </Link>
           </nav>
 
-          {/* =========================
-              MOBILE MENU BUTTON
-              Visible ONLY on mobile
-          ========================== */}
+          {/* MOBILE MENU BUTTON */}
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
@@ -86,7 +85,6 @@ export default function Header() {
             aria-expanded={menuOpen}
           >
             {menuOpen ? (
-              /* X */
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -102,7 +100,6 @@ export default function Header() {
                 />
               </svg>
             ) : (
-              /* HAMBURGER */
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -121,21 +118,24 @@ export default function Header() {
           </button>
         </div>
 
-        {/* =========================
-            MOBILE NAVIGATION
-            Visible ONLY on mobile
-        ========================== */}
+        {/* MOBILE NAVIGATION */}
         {menuOpen && (
           <nav className="border-t border-[#E5DCD0] py-3 md:hidden">
-
             <div className="flex flex-col">
-
               <Link
                 href="/"
                 onClick={closeMenu}
                 className="rounded-lg px-4 py-3 font-medium transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
               >
                 Home
+              </Link>
+
+              <Link
+                href="/guides"
+                onClick={closeMenu}
+                className="rounded-lg px-4 py-3 font-medium transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
+              >
+                Guides
               </Link>
 
               <Link
@@ -162,11 +162,18 @@ export default function Header() {
                 Contact
               </Link>
 
+              <div className="px-4 pt-3">
+                <Link
+                  href="/#tracking"
+                  onClick={closeMenu}
+                  className={`${trackButtonClass} block text-center`}
+                >
+                  Track Your Shipment
+                </Link>
+              </div>
             </div>
-
           </nav>
         )}
-
       </div>
     </header>
   );

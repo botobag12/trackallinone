@@ -92,7 +92,7 @@ function getEventValue(event, keys) {
   return "";
 }
 
-function getCourierName(result, selectedCourier) {
+function getCourierName(result) {
   const shipment = getShipmentData(result);
 
   const detectedCourier =
@@ -111,12 +111,11 @@ function getCourierName(result, selectedCourier) {
     return (
       detectedCourier.name ??
       detectedCourier.title ??
-      selectedCourier?.name ??
       "Not identified"
     );
   }
 
-  return selectedCourier?.name ?? "Not identified";
+  return "Not identified";
 }
 
 function formatReceiptDate(value) {
@@ -431,17 +430,11 @@ function downloadTrackingReceipt({
 }
 
 export default function Home() {
-  const [courier, setCourier] = useState(null);
-  const [trackingNumber, setTrackingNumber] = useState("");
-  const [search, setSearch] = useState("");
-  const [showCouriers, setShowCouriers] = useState(false);
+ const [trackingNumber, setTrackingNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [trackingResult, setTrackingResult] = useState(null);
 
-  const filteredCouriers = couriers.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
 
   const shipmentStatus = trackingResult
     ? getStatus(trackingResult)
@@ -456,9 +449,8 @@ export default function Home() {
     : "";
 
   const displayedCourier = trackingResult
-    ? getCourierName(trackingResult, courier)
-    : "";
-
+  ? getCourierName(trackingResult)
+  : "";
   const handleDownloadReceipt = () => {
     if (!trackingResult) return;
 
@@ -516,7 +508,7 @@ export default function Home() {
     setError("");
     setTrackingResult(null);
     setLoading(true);
-    setShowCouriers(false);
+    
 
     try {
       const response = await fetch("/api/track", {
@@ -526,9 +518,6 @@ export default function Home() {
         },
         body: JSON.stringify({
           trackingNumber: cleanTrackingNumber,
-          ...(courier?.id
-            ? { carrier: String(courier.id) }
-            : {}),
         }),
       });
 
@@ -552,22 +541,6 @@ export default function Home() {
     }
   };
 
-  const chooseCourier = (item) => {
-    setCourier(item);
-    setSearch("");
-    setShowCouriers(false);
-    setError("");
-    setTrackingResult(null);
-  };
-
-  const selectCourierFromDirectory = (item) => {
-    chooseCourier(item);
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   return (
     <main className="min-h-screen bg-[#FFF8ED] text-[#111111]">
@@ -597,302 +570,202 @@ export default function Home() {
         </div>
 
         {/* TRACKING FORM */}
-        <div className="mx-auto mt-12 max-w-3xl rounded-2xl bg-white p-6 shadow-xl md:p-8">
-          <div className="relative">
-            <label
-              htmlFor="courier-search"
-              className="mb-2 block text-left text-sm font-semibold"
-            >
-              Select Courier (Optional)
-            </label>
 
-            <input
-              id="courier-search"
-              type="text"
-              value={courier ? courier.name : search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setCourier(null);
-                setShowCouriers(true);
-                setError("");
-                setTrackingResult(null);
-              }}
-              onFocus={() => setShowCouriers(true)}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") {
-                  setShowCouriers(false);
-                }
-              }}
-              placeholder="Search for a courier or leave blank for auto-detection..."
-              autoComplete="off"
-              aria-expanded={showCouriers}
-              aria-controls="courier-options"
-              className="w-full rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] px-4 py-4 outline-none transition focus:border-[#7A1717] focus:ring-2 focus:ring-[#7A1717]/20"
-            />
+        <div id="tracking" className="mx-auto mt-12 max-w-3xl rounded-2xl bg-white p-6 shadow-xl md:p-8">
 
-            {courier && (
-              <button
-                type="button"
-                onClick={() => {
-                  setCourier(null);
-                  setSearch("");
-                  setError("");
-                  setTrackingResult(null);
-                }}
-                className="mt-2 text-sm font-medium text-[#7A1717] underline"
-              >
-                Clear selected courier
-              </button>
-            )}
+  {/* TRACKING NUMBER */}
+  <div>
+    <label
+      htmlFor="tracking-number"
+      className="mb-2 block text-left text-sm font-semibold"
+    >
+      Tracking Number
+    </label>
 
-            {showCouriers && (
-              <div
-                id="courier-options"
-                className="absolute z-20 mt-2 max-h-60 w-full overflow-y-auto rounded-xl border border-[#E5DCD0] bg-white shadow-lg"
-              >
-                {filteredCouriers.length > 0 ? (
-                  filteredCouriers.map((item) => (
-                    <button
-                      key={item.id}
-                      type="button"
-                      onClick={() => chooseCourier(item)}
-                      className="block w-full px-4 py-3 text-left transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
-                    >
-                      <span className="font-medium">
-                        {item.name}
-                      </span>
-                      <span className="ml-2 text-sm text-[#625B55]">
-                        {item.country}
-                      </span>
-                    </button>
-                  ))
-                ) : (
-                  <p className="p-4 text-left text-sm text-[#625B55]">
-                    No courier found.
+    <input
+      id="tracking-number"
+      type="text"
+      value={trackingNumber}
+      onChange={(event) => {
+        setTrackingNumber(event.target.value);
+        setError("");
+        setTrackingResult(null);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" && !loading) {
+          handleTrack();
+        }
+      }}
+      placeholder="Enter your tracking number"
+      autoComplete="off"
+      maxLength={100}
+      className="w-full rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] px-4 py-4 outline-none transition focus:border-[#7A1717] focus:ring-2 focus:ring-[#7A1717]/20"
+    />
+  </div>
+
+  {/* TRACK BUTTON */}
+  <button
+    type="button"
+    onClick={handleTrack}
+    disabled={loading}
+    className="mt-6 w-full rounded-xl bg-[#7A1717] px-6 py-4 text-lg font-bold text-white transition hover:bg-[#941F1F] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+  >
+    {loading ? "CHECKING SHIPMENT..." : "TRACK SHIPMENT"}
+  </button>
+
+  <p className="mt-3 text-center text-sm text-[#625B55]">
+    Our tracking service will attempt to identify your courier automatically.
+  </p>
+
+  {/* ERROR MESSAGE */}
+  {error && (
+    <div
+      role="alert"
+      className="mt-6 rounded-xl border border-red-200 bg-red-50 p-5"
+    >
+      <h2 className="font-bold text-red-800">
+        Tracking information unavailable
+      </h2>
+
+      <p className="mt-2 text-sm leading-6 text-red-800">
+        {error}
+      </p>
+    </div>
+  )}
+
+  {/* TRACKING RESULTS */}
+  {trackingResult && (
+    <section
+      aria-live="polite"
+      className="mt-8 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-5"
+    >
+      <p className="text-sm font-semibold uppercase tracking-wide text-[#7A1717]">
+        Tracking Results
+      </p>
+
+      <h2 className="mt-2 break-words text-xl font-bold">
+        Shipment {trackingNumber.trim()}
+      </h2>
+
+      <p className="mt-2 text-sm text-[#625B55]">
+        Courier:{" "}
+        <span className="font-semibold text-[#111111]">
+          {displayedCourier}
+        </span>
+      </p>
+
+      {/* CURRENT STATUS */}
+      <div className="mt-5 rounded-xl border border-[#E5DCD0] bg-white p-4">
+        <p className="text-sm text-[#625B55]">
+          Current Status
+        </p>
+
+        <p className="mt-1 break-words text-lg font-bold text-[#7A1717]">
+          {displayedStatus}
+        </p>
+      </div>
+
+      {/* TRACKING HISTORY */}
+      {trackingEvents.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-lg font-bold">
+            Tracking History
+          </h3>
+
+          <ol className="mt-4 space-y-4">
+            {trackingEvents.map((event, index) => {
+              const eventStatus = getEventValue(event, [
+                "status",
+                "description",
+                "event",
+                "message",
+                "activity",
+              ]);
+
+              const location = getEventValue(event, [
+                "location",
+                "city",
+                "place",
+                "address",
+              ]);
+
+              const date = getEventValue(event, [
+                "date",
+                "datetime",
+                "timestamp",
+                "time",
+                "createdAt",
+                "created_at",
+              ]);
+
+              return (
+                <li
+                  key={`${date}-${index}`}
+                  className="relative border-l-2 border-[#D8B8A7] pb-2 pl-5 last:border-l-0"
+                >
+                  <span className="absolute -left-[6px] top-1 h-2.5 w-2.5 rounded-full bg-[#7A1717]" />
+
+                  <p className="font-semibold">
+                    {eventStatus || "Shipment update"}
                   </p>
-                )}
-              </div>
-            )}
-          </div>
 
-          {/* TRACKING NUMBER */}
-          <div className="mt-5">
-            <label
-              htmlFor="tracking-number"
-              className="mb-2 block text-left text-sm font-semibold"
-            >
-              Tracking Number
-            </label>
+                  {location && (
+                    <p className="mt-1 text-sm text-[#625B55]">
+                      {location}
+                    </p>
+                  )}
 
-            <input
-              id="tracking-number"
-              type="text"
-              value={trackingNumber}
-              onChange={(event) => {
-                setTrackingNumber(event.target.value);
-                setError("");
-                setTrackingResult(null);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" && !loading) {
-                  handleTrack();
-                }
-              }}
-              placeholder="Enter your tracking number"
-              autoComplete="off"
-              maxLength={100}
-              className="w-full rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] px-4 py-4 outline-none transition focus:border-[#7A1717] focus:ring-2 focus:ring-[#7A1717]/20"
-            />
-          </div>
-
-          <button
-            type="button"
-            onClick={handleTrack}
-            disabled={loading}
-            className="mt-6 w-full rounded-xl bg-[#7A1717] px-6 py-4 text-lg font-bold text-white transition hover:bg-[#941F1F] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? "CHECKING SHIPMENT..." : "TRACK SHIPMENT"}
-          </button>
-
-          <p className="mt-3 text-center text-sm text-[#625B55]">
-            Your tracking request is processed securely by our server.
-          </p>
-
-          {/* ERROR AND FALLBACK */}
-          {error && (
-            <div
-              role="alert"
-              className="mt-6 rounded-xl border border-red-200 bg-red-50 p-5"
-            >
-              <h2 className="font-bold text-red-800">
-                Tracking information unavailable
-              </h2>
-
-              <p className="mt-2 text-sm leading-6 text-red-800">
-                {error}
-              </p>
-
-              {courier?.trackingUrl && (
-                <button
-                  type="button"
-                  onClick={openOfficialTracking}
-                  className="mt-4 rounded-lg bg-[#7A1717] px-5 py-3 font-semibold text-white transition hover:bg-[#941F1F]"
-                >
-                  Try Official {courier.name} Tracking
-                </button>
-              )}
-
-              {!courier && (
-                <p className="mt-3 text-sm text-red-800">
-                  Select your courier above to access its official
-                  tracking page as an alternative.
-                </p>
-              )}
-            </div>
-          )}
-
-          {/* TRACKING RESULTS */}
-          {trackingResult && (
-            <section
-              aria-live="polite"
-              className="mt-8 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-5"
-            >
-              <p className="text-sm font-semibold uppercase tracking-wide text-[#7A1717]">
-                Tracking Results
-              </p>
-
-              <h2 className="mt-2 break-words text-xl font-bold">
-                Shipment {trackingNumber.trim()}
-              </h2>
-
-              <p className="mt-2 text-sm text-[#625B55]">
-                Courier:{" "}
-                <span className="font-semibold text-[#111111]">
-                  {displayedCourier}
-                </span>
-              </p>
-
-              <div className="mt-5 rounded-xl border border-[#E5DCD0] bg-white p-4">
-                <p className="text-sm text-[#625B55]">
-                  Current Status
-                </p>
-
-                <p className="mt-1 break-words text-lg font-bold text-[#7A1717]">
-                  {displayedStatus}
-                </p>
-              </div>
-
-              {trackingEvents.length > 0 && (
-                <div className="mt-6">
-                  <h3 className="text-lg font-bold">
-                    Tracking History
-                  </h3>
-
-                  <ol className="mt-4 space-y-4">
-                    {trackingEvents.map((event, index) => {
-                      const eventStatus = getEventValue(event, [
-                        "status",
-                        "description",
-                        "event",
-                        "message",
-                        "activity",
-                      ]);
-
-                      const location = getEventValue(event, [
-                        "location",
-                        "city",
-                        "place",
-                        "address",
-                      ]);
-
-                      const date = getEventValue(event, [
-                        "date",
-                        "datetime",
-                        "timestamp",
-                        "time",
-                        "createdAt",
-                        "created_at",
-                      ]);
-
-                      return (
-                        <li
-                          key={`${date}-${index}`}
-                          className="relative border-l-2 border-[#D8B8A7] pb-2 pl-5 last:border-l-0"
-                        >
-                          <span className="absolute -left-[6px] top-1 h-2.5 w-2.5 rounded-full bg-[#7A1717]" />
-
-                          <p className="font-semibold">
-                            {eventStatus || "Shipment update"}
-                          </p>
-
-                          {location && (
-                            <p className="mt-1 text-sm text-[#625B55]">
-                              {location}
-                            </p>
-                          )}
-
-                          {date && (
-                            <p className="mt-1 text-xs text-[#625B55]">
-                              {date}
-                            </p>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ol>
-                </div>
-              )}
-
-              {!shipmentStatus && trackingEvents.length === 0 && (
-                <p className="mt-4 text-sm leading-6 text-[#625B55]">
-                  The service returned tracking data, but its
-                  status or event history could not be identified
-                  in the expected fields.
-                </p>
-              )}
-
-              {/* DOWNLOAD PDF RECEIPT */}
-              <button
-                type="button"
-                onClick={handleDownloadReceipt}
-                className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#7A1717] px-5 py-4 font-bold text-white transition hover:bg-[#941F1F] active:scale-[0.99]"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="21"
-                  height="21"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                Download Tracking Receipt (PDF)
-              </button>
-
-              <p className="mt-2 text-center text-xs leading-5 text-[#625B55]">
-                Save or print a report of the tracking information
-                returned by the tracking service.
-              </p>
-
-              {courier?.trackingUrl && (
-                <button
-                  type="button"
-                  onClick={openOfficialTracking}
-                  className="mt-4 w-full rounded-xl border-2 border-[#7A1717] px-5 py-3 font-semibold text-[#7A1717] transition hover:bg-[#7A1717] hover:text-white"
-                >
-                  Also Check Official {courier.name} Website
-                </button>
-              )}
-            </section>
-          )}
+                  {date && (
+                    <p className="mt-1 text-xs text-[#625B55]">
+                      {date}
+                    </p>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
         </div>
+      )}
+
+      {/* NO STATUS OR HISTORY */}
+      {!shipmentStatus && trackingEvents.length === 0 && (
+        <p className="mt-4 text-sm leading-6 text-[#625B55]">
+          The service returned tracking data, but its status or event history could not be identified in the expected fields.
+        </p>
+      )}
+
+      {/* DOWNLOAD PDF RECEIPT */}
+      <button
+        type="button"
+        onClick={handleDownloadReceipt}
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#7A1717] px-5 py-4 font-bold text-white transition hover:bg-[#941F1F] active:scale-[0.99]"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="21"
+          height="21"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+
+        Download Tracking Receipt (PDF)
+      </button>
+
+      <p className="mt-2 text-center text-xs leading-5 text-[#625B55]">
+        Save or print a report of the tracking information returned by the tracking service.
+      </p>
+    </section>
+  )}
+</div>
 
         {/* GUIDES */}
         <div className="mx-auto mt-8 max-w-3xl text-center">
@@ -910,53 +783,53 @@ export default function Home() {
       </section>
 
       {/* HOW TRACKING WORKS */}
-      <section className="border-t border-[#E5DCD0] bg-[#FFF8ED] px-6 py-16">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-3xl font-bold">
-            How Shipment Tracking Works
-          </h2>
+     <section className="border-t border-[#E5DCD0] bg-[#FFF8ED] px-6 py-16">
+  <div className="mx-auto max-w-5xl">
+    <h2 className="text-center text-3xl font-bold">
+      How Shipment Tracking Works
+    </h2>
 
-          <p className="mx-auto mt-4 max-w-3xl text-center text-[#625B55]">
-            Enter your tracking number to check available
-            shipment information through our tracking service.
-            If a shipment cannot be located, you can try the
-            official courier website.
-          </p>
+    <p className="mx-auto mt-4 max-w-3xl text-center text-[#625B55]">
+      Track your shipment by entering its tracking number.
+      Our tracking service will attempt to identify the courier
+      automatically and retrieve the available shipment information.
+    </p>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
-              <h3 className="text-xl font-bold">
-                1. Select Your Courier
-              </h3>
-              <p className="mt-3 leading-7 text-[#625B55]">
-                Choose a courier from our directory or leave the
-                selection blank when you want the tracking service
-                to attempt automatic detection.
-              </p>
-            </div>
+    <div className="mt-10 grid gap-6 md:grid-cols-3">
+      <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
+        <h3 className="text-xl font-bold">
+          1. Enter Your Tracking Number
+        </h3>
+        <p className="mt-3 leading-7 text-[#625B55]">
+          Enter the tracking number provided by your sender,
+          online store, courier, or postal service.
+        </p>
+      </div>
 
-            <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
-              <h3 className="text-xl font-bold">
-                2. Enter Your Tracking Number
-              </h3>
-              <p className="mt-3 leading-7 text-[#625B55]">
-                Enter the tracking number provided by your sender,
-                online store, courier, or postal service.
-              </p>
-            </div>
+      <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
+        <h3 className="text-xl font-bold">
+          2. Automatic Courier Detection
+        </h3>
+        <p className="mt-3 leading-7 text-[#625B55]">
+          Our tracking service attempts to identify the courier
+          associated with your tracking number and retrieve
+          the shipment details.
+        </p>
+      </div>
 
-            <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
-              <h3 className="text-xl font-bold">
-                3. View and Save Results
-              </h3>
-              <p className="mt-3 leading-7 text-[#625B55]">
-                Review available tracking information and download
-                a PDF tracking report for your records.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="rounded-2xl border border-[#E5DCD0] bg-white p-6">
+        <h3 className="text-xl font-bold">
+          3. View and Save Results
+        </h3>
+        <p className="mt-3 leading-7 text-[#625B55]">
+          Review the available shipment status and tracking
+          history, then download a PDF tracking report for
+          your records.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* COURIER DIRECTORY */}
       <section
@@ -974,24 +847,22 @@ export default function Home() {
           </p>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {couriers.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => selectCourierFromDirectory(item)}
-                className="rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-5 text-left transition hover:-translate-y-1 hover:border-[#7A1717] hover:shadow-md"
-              >
-                <h3 className="font-bold">{item.name}</h3>
+{couriers.map((item) => (
+  <div
+    key={item.id}
+    className="rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-5"
+  >
+    <h3 className="font-bold">{item.name}</h3>
 
-                <p className="mt-1 text-sm text-[#625B55]">
-                  {item.country}
-                </p>
+    <p className="mt-1 text-sm text-[#625B55]">
+      {item.country}
+    </p>
 
-                <p className="mt-3 text-sm font-medium text-[#7A1717]">
-                  Track {item.name} →
-                </p>
-              </button>
-            ))}
+    <p className="mt-3 text-sm font-medium text-[#7A1717]">
+      Listed courier service
+    </p>
+  </div>
+))}
           </div>
         </div>
       </section>
