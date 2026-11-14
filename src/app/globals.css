@@ -1,29 +1,325 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
+/* =========================================
+   1. BRAND VARIABLES
+========================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  --background: #fff8ed;
+  --foreground: #211d1a;
+
+  --brand-red: #7a1717;
+  --brand-red-dark: #5f1010;
+  --brand-cream: #fff8ed;
+  --brand-charcoal: #151311;
+
+  --surface: #fffdf9;
+  --surface-soft: #fffcf8;
+
+  --text-primary: #211d1a;
+  --text-secondary: #514943;
+  --text-muted: #62564d;
+
+  --border-soft: #e8ded3;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: "Roboto", Arial, sans-serif;
   --font-mono: monospace;
 }
 
+/* =========================================
+   2. GLOBAL RESET
+========================================= */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  min-height: 100vh;
+
+  background-color: var(--background);
+  color: var(--text-primary);
+
   font-family: "Roboto", Arial, Helvetica, sans-serif;
+
+  font-size: 16px;
+  line-height: 1.6;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
 }
 
+/* =========================================
+   3. DEFAULT TEXT COLORS
+========================================= */
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--text-primary);
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  p,
+  li,
+  label,
+  figcaption,
+  blockquote {
+    color: var(--text-secondary);
+  }
+
+  strong,
+  b {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+/* =========================================
+   4. IMPROVE LIGHT GRAY TEXT CONTRAST
+   These colors are commonly used for muted
+   text on cream and white backgrounds.
+========================================= */
+
+[class*="text-[#82766D]"],
+[class*="text-[#94877D]"],
+[class*="text-[#A09388]"],
+[class*="text-[#A69A90]"],
+[class*="text-[#71665E]"],
+[class*="text-[#625B55]"],
+[class*="text-[#514943]"],
+[class*="text-[#958B82]"] {
+  color: #514943 !important;
+}
+
+/* Common Tailwind gray text utilities */
+
+.text-gray-400,
+.text-gray-500,
+.text-neutral-400,
+.text-neutral-500,
+.text-stone-400,
+.text-stone-500 {
+  color: #514943 !important;
+}
+
+/* Keep explicitly white text white */
+
+.text-white {
+  color: #ffffff !important;
+}
+
+/* =========================================
+   5. BACKGROUND SURFACES
+========================================= */
+
+/* Give white cards a softer appearance */
+
+.bg-white {
+  background-color: #fffdf9;
+}
+
+/* Cream backgrounds */
+
+.bg-\[\#FFF8ED\] {
+  background-color: #fff8ed;
+}
+
+/* Keep the dark footer and dark sections */
+
+.bg-\[\#111111\],
+.bg-\[\#151311\] {
+  background-color: #151311;
+}
+
+/* =========================================
+   6. ICONS AND SVG
+========================================= */
+
+/* SVG icons should normally inherit their
+   parent text color. This preserves white
+   icons on dark buttons and red icons in
+   branded sections. */
+
+svg {
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+/* Default color for icons without a parent
+   text color or explicit color. */
+
+svg:not([class*="text-"]) {
+  color: inherit;
+}
+
+/* =========================================
+   7. BUTTONS
+========================================= */
+
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* =========================================
+   8. FORM ELEMENTS
+========================================= */
+
+input,
+textarea,
+select {
+  width: 100%;
+  color: #211d1a;
+  background-color: #fffdf9;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #756960;
+  opacity: 1;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* =========================================
+   9. LINKS
+========================================= */
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--brand-red);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   10. BORDERS AND SELECTION
+========================================= */
+
+::selection {
+  background-color: #7a1717;
+  color: #ffffff;
+}
+
+img {
+  max-width: 100%;
+}
+
+hr {
+  border-color: var(--border-soft);
+}
+
+/* =========================================
+   11. SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4ebdf;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b99c89;
+  border: 2px solid #f4ebdf;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7a1717;
+}
+
+/* =========================================
+   12. ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================
+   13. MOBILE IMPROVEMENTS
+========================================= */
+
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+
+  html {
+    scroll-padding-top: 85px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

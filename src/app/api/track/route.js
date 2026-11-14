@@ -1,20 +1,98 @@
 
-export async function POST(request) {
-  try {
-    // 1. Get the API key from server environment variables
-    const apiKey = process.env.TRACKING_API_KEY;
+import { SELECTABLE_CARRIERS } from "universal-parcel-scraper";
 
-    if (!apiKey) {
-      return Response.json(
+import { trackShipment } from "@/lib/tracking/scraper";
+import { normalizeTrackingResult } from "@/lib/tracking/normalize";
+import { supabaseAdmin } from "@/lib/supabase/admin";
+
+export const runtime = "nodejs";
+
+function hasUsefulTrackingData(result) {
+  if (!result || result.success !== true) {
+    return false;
+  }
+
+  const hasStatus =
+    result.status &&
+    result.status.toLowerCase() !== "unknown";
+
+  const hasEvents =
+    Array.isArray(result.events) &&
+    result.events.length > 0;
+
+  return Boolean(hasStatus || hasEvents);
+}
+
+function isValidUUID(value) {
+  return (
+    typeof value === "string" &&
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)
+  );
+}
+
+// Save analytics without interrupting the tracking operation.
+async function saveTrackingAnalytics({
+  requestId,
+  attemptType,
+  courierId,
+  success,
+  responseTime,
+  failureReason,
+}) {
+  try {
+    const { error: requestError } = await supabaseAdmin
+      .from("tracking_requests")
+      .upsert(
         {
-          success: false,
-          message: "Tracking service is not configured.",
+          id: requestId,
+          final_success: success,
+          final_method: attemptType,
+          final_courier_id: courierId || null,
+          total_duration_ms: responseTime,
+          failure_reason: success
+            ? null
+            : String(failureReason || "Tracking unsuccessful").slice(0, 500),
         },
-        { status: 500 }
+        {
+          onConflict: "id",
+        }
       );
+
+    if (requestError) {
+      console.error("Analytics request save failed:", {
+        message: requestError.message,
+      });
+
+      return;
     }
 
-    // 2. Read and validate the incoming request
+    const { error: attemptError } = await supabaseAdmin
+      .from("tracking_attempts")
+      .insert({
+        request_id: requestId,
+        attempt_type: attemptType,
+        courier_id: courierId || null,
+        success,
+        response_time_ms: responseTime,
+        failure_reason: success
+          ? null
+          : String(failureReason || "Tracking unsuccessful").slice(0, 500),
+      });
+
+    if (attemptError) {
+      console.error("Analytics attempt save failed:", {
+        message: attemptError.message,
+      });
+    }
+  } catch (error) {
+    console.error("Analytics storage unavailable:", {
+      message: error?.message,
+    });
+  }
+}
+
+export async function POST(request) {
+  try {
     let body;
 
     try {
@@ -23,157 +101,200 @@ export async function POST(request) {
       return Response.json(
         {
           success: false,
-          message: "Invalid request body. Please send valid JSON.",
+          message: "Invalid request. Please try again.",
         },
         { status: 400 }
       );
     }
 
     const trackingNumber =
-      typeof body?.trackingNumber === "string"
+      typeof body.trackingNumber === "string"
         ? body.trackingNumber.trim()
         : "";
 
-    if (!trackingNumber || trackingNumber.length > 100) {
+    const carrierId =
+      typeof body.carrier === "string"
+        ? body.carrier.trim()
+        : "";
+
+    if (!trackingNumber) {
       return Response.json(
         {
           success: false,
-          message: "Enter a valid tracking number.",
+          message: "Please enter a tracking number.",
         },
         { status: 400 }
       );
     }
 
-    // 3. Send only the tracking number.
-    // TrackMyParcel will automatically detect the courier.
-    const payload = {
-      trackingNumber,
-    };
-
-    // 4. Send the request to TrackMyParcel
-    let upstream;
-
-    try {
-      upstream = await fetch(
-        "https://trackmyparcel.pk/v1/track",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-          cache: "no-store",
-          signal: AbortSignal.timeout(20000),
-        }
-      );
-    } catch (error) {
-      console.error(
-        "TrackMyParcel connection error:",
-        error?.name || "Unknown error"
-      );
-
-      const timedOut = error?.name === "TimeoutError";
-
+    if (trackingNumber.length > 100) {
       return Response.json(
         {
           success: false,
-          message: timedOut
-            ? "Tracking is taking too long. Please try again."
-            : "Unable to connect to the tracking service. Please try again.",
+          message: "Tracking number is too long.",
         },
-        { status: timedOut ? 504 : 502 }
+        { status: 400 }
       );
     }
 
-    // 5. Read the provider response
-    const result = await upstream.json().catch(() => null);
+    let selectedCarrier = null;
 
-    // 6. Handle provider HTTP errors
-    if (!upstream.ok) {
-      console.error(
-        "TrackMyParcel HTTP status:",
-        upstream.status
-      );
+    
+if (carrierId) {
+  selectedCarrier = SELECTABLE_CARRIERS.find(
+    (item) => item.id === carrierId
+  );
 
-      console.error(
-        "TrackMyParcel error code:",
-        result?.error?.code || "UNKNOWN_ERROR"
-      );
-
-      if (result?.error?.code === "TRACKING_NOT_FOUND") {
-        return Response.json(
-          {
-            success: false,
-            message:
-              "No shipment found for this tracking number. Check the number and try again.",
-          },
-          { status: 404 }
-        );
-      }
-
-      if (upstream.status === 401 || upstream.status === 403) {
-        return Response.json(
-          {
-            success: false,
-            message:
-              "The tracking service rejected the request. Please check the API credentials or permissions.",
-          },
-          { status: upstream.status }
-        );
-      }
-
-      if (upstream.status === 429) {
-        return Response.json(
-          {
-            success: false,
-            message:
-              "Too many tracking requests. Please try again later.",
-          },
-          { status: 429 }
-        );
-      }
-
-      return Response.json(
-        {
-          success: false,
-          message:
-            "Unable to retrieve tracking information. Please try again.",
-        },
-        { status: 502 }
-      );
-    }
-
-    // 7. Validate the provider response
-    if (!result || typeof result.success !== "boolean") {
-      return Response.json(
-        {
-          success: false,
-          message:
-            "Unexpected response from the tracking service.",
-        },
-        { status: 502 }
-      );
-    }
-
-    // 8. Return the tracking result to the frontend
-    return Response.json(result, {
-      headers: {
-        "Cache-Control": "no-store",
+  if (!selectedCarrier) {
+    return Response.json(
+      {
+        success: false,
+        message: "The selected carrier is not supported.",
       },
-    });
+      { status: 400 }
+    );
+  }
 
-  } catch (error) {
+  // Check whether this courier is enabled in Supabase.
+  const {
+    data: courierSetting,
+    error: courierSettingError,
+  } = await supabaseAdmin
+    .from("courier_settings")
+    .select("enabled")
+    .eq("courier_id", carrierId)
+    .maybeSingle();
+
+  if (courierSettingError) {
     console.error(
-      "Tracking route error:",
-      error?.name || "Unknown error"
+      "Courier availability check failed:",
+      courierSettingError.message
     );
 
     return Response.json(
       {
         success: false,
-        message:
-          "Unable to process your tracking request.",
+        message: "Unable to verify courier availability. Please try again.",
+      },
+      { status: 500 }
+    );
+  }
+
+  if (courierSetting && !courierSetting.enabled) {
+    return Response.json(
+      {
+        success: false,
+        message: "This courier is currently unavailable.",
+      },
+      { status: 400 }
+    );
+  }
+}
+
+
+    // Reuse the existing ID when the user manually selects a carrier.
+    // Otherwise, create a new analytics request.
+    const requestId = isValidUUID(body.analyticsRequestId)
+      ? body.analyticsRequestId
+      : crypto.randomUUID();
+
+    const attemptType = carrierId ? "manual" : "automatic";
+    const startTime = Date.now();
+
+    try {
+      const trackingResponse = await trackShipment(
+        trackingNumber,
+        carrierId || null
+      );
+
+      const responseTime = Date.now() - startTime;
+
+      const normalizedResult = normalizeTrackingResult(
+        trackingResponse,
+        trackingNumber
+      );
+
+      if (hasUsefulTrackingData(normalizedResult)) {
+        await saveTrackingAnalytics({
+          requestId,
+          attemptType,
+          courierId: carrierId || null,
+          success: true,
+          responseTime,
+        });
+
+        return Response.json({
+          ...normalizedResult,
+          analyticsRequestId: requestId,
+        });
+      }
+
+      const failureMessage = carrierId
+        ? `No tracking history was found for ${selectedCarrier.name}. Please check the tracking number.`
+        : "Automatic carrier detection could not retrieve tracking information. Please select your carrier and try again.";
+
+      await saveTrackingAnalytics({
+        requestId,
+        attemptType,
+        courierId: carrierId || null,
+        success: false,
+        responseTime,
+        failureReason: failureMessage,
+      });
+
+      return Response.json(
+        {
+          success: false,
+          needsCarrierSelection: !carrierId,
+          carrierAttempted: Boolean(carrierId),
+          analyticsRequestId: requestId,
+          message: failureMessage,
+        },
+        { status: 422 }
+      );
+    } catch (error) {
+      const responseTime = Date.now() - startTime;
+
+      console.error("Tracking attempt failed:", {
+        name: error?.name,
+        message: error?.message,
+        carrier: carrierId || "automatic",
+      });
+
+      const failureMessage = carrierId
+        ? `Unable to retrieve tracking information from ${selectedCarrier.name}. Please check the number or try another carrier.`
+        : "Automatic tracking was unsuccessful. Please select your carrier and try again.";
+
+      await saveTrackingAnalytics({
+        requestId,
+        attemptType,
+        courierId: carrierId || null,
+        success: false,
+        responseTime,
+        failureReason: failureMessage,
+      });
+
+      return Response.json(
+        {
+          success: false,
+          needsCarrierSelection: !carrierId,
+          carrierAttempted: Boolean(carrierId),
+          analyticsRequestId: requestId,
+          message: failureMessage,
+        },
+        { status: 422 }
+      );
+    }
+  } catch (error) {
+    console.error("Tracking API error:", {
+      name: error?.name,
+      message: error?.message,
+    });
+
+    return Response.json(
+      {
+        success: false,
+        message: "An unexpected error occurred. Please try again.",
       },
       { status: 500 }
     );

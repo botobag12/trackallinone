@@ -6,252 +6,454 @@ import Header from "@/components/Header";
 export const metadata = {
   title: "About TrackAllInOne | Parcel Tracking Made Easier",
   description:
-    "Learn how TrackAllInOne helps users track shipments, understand delivery statuses, and find useful courier tracking guides.",
+    "Discover how TrackAllInOne simplifies shipment tracking with courier information, tracking tools, and practical delivery guides.",
   alternates: {
     canonical: "https://www.trackallinone.com/about",
   },
   openGraph: {
-    title: "About TrackAllInOne",
+    title: "About TrackAllInOne | Parcel Tracking Made Easier",
     description:
-      "Discover TrackAllInOne's shipment tracking tools, courier information, and practical delivery guides.",
+      "Discover our shipment tracking tools, courier directory, and practical delivery guides.",
     url: "https://www.trackallinone.com/about",
     siteName: "TrackAllInOne",
     type: "website",
   },
 };
 
+const features = [
+  {
+    number: "01",
+    icon: "📦",
+    title: "Shipment Tracking",
+    description:
+      "Submit a tracking number and check available shipment updates through our tracking service.",
+    color: "bg-[#FFF0E5]",
+  },
+  {
+    number: "02",
+    icon: "🚚",
+    title: "Courier Information",
+    description:
+      "Explore courier information, supported services, and useful details about delivery companies.",
+    color: "bg-[#EAF2FF]",
+  },
+  {
+    number: "03",
+    icon: "📖",
+    title: "Practical Guides",
+    description:
+      "Understand tracking statuses, find tracking numbers, and learn how to handle common tracking issues.",
+    color: "bg-[#EAF5EB]",
+  },
+];
+
+const steps = [
+  {
+    number: "01",
+    title: "Enter Your Tracking Number",
+    description:
+      "Visit our homepage and enter the tracking number provided by your seller or courier.",
+  },
+  {
+    number: "02",
+    title: "Submit Your Request",
+    description:
+      "Our tracking system processes your request through its tracking provider and available carrier coverage.",
+  },
+  {
+    number: "03",
+    title: "Review Shipment Updates",
+    description:
+      "View the shipment status and available tracking events returned for your parcel.",
+  },
+];
+
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-[#FFF8ED] text-[#111111]">
+    <main className="min-h-screen overflow-hidden bg-[#FFF8ED] text-[#211D1A]">
       <Header />
 
-      <section className="px-6 py-20 text-center">
-        <div className="mx-auto max-w-4xl">
-          <p className="font-semibold uppercase tracking-[0.2em] text-[#7A1717]">
-            About Us
-          </p>
+      {/* HERO */}
+      <section className="relative px-4 pb-16 pt-16 sm:px-6 sm:pb-20 sm:pt-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#E8D6C7] bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#7A1717]">
+              <span className="h-2 w-2 rounded-full bg-[#7A1717]" />
+              About Our Platform
+            </div>
 
-          <h1 className="mt-4 text-4xl font-bold md:text-5xl">
-            About TrackAllInOne
-          </h1>
+            <h1 className="mt-6 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+              Making parcel tracking
+              <span className="text-[#7A1717]"> simpler.</span>
+            </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#625B55]">
-            A convenient place to check supported shipments, explore
-            courier information, and learn more about parcel delivery.
-          </p>
+            <p className="mt-6 max-w-xl text-base leading-8 text-[#71665E] sm:text-lg">
+              TrackAllInOne brings shipment tracking tools, courier
+              information, and practical delivery guides together
+              to make it easier to follow your parcels.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#7A1717] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#7A1717]/15 transition hover:-translate-y-0.5 hover:bg-[#5F1010]"
+              >
+                Track a Shipment
+                <span aria-hidden="true">→</span>
+              </Link>
+
+              <Link
+                href="/guides"
+                className="inline-flex items-center justify-center rounded-xl border border-[#DCC8B8] bg-white px-6 py-3.5 text-sm font-bold text-[#7A1717] transition hover:border-[#7A1717]"
+              >
+                Explore Guides
+              </Link>
+            </div>
+          </div>
+
+          {/* VISUAL */}
+          <div className="relative mx-auto w-full max-w-lg">
+            <div className="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-[#F2DDD0] blur-3xl" />
+            <div className="absolute -bottom-8 -left-8 h-40 w-40 rounded-full bg-[#E8E2D4] blur-3xl" />
+
+            <div className="relative rounded-[32px] border border-[#E9DED2] bg-white p-5 shadow-[0_25px_70px_rgba(62,35,22,0.10)] sm:p-8">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9A8B80]">
+                    TrackAllInOne
+                  </p>
+                  <h2 className="mt-2 text-xl font-extrabold">
+                    Your parcel journey
+                  </h2>
+                </div>
+
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F8E9E2] text-2xl">
+                  📦
+                </div>
+              </div>
+
+              <div className="mt-8 rounded-2xl bg-[#FFF8ED] p-5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-xl">
+                    🔍
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">Shipment tracking</p>
+                    <p className="mt-1 text-xs text-[#82766D]">
+                      Check available delivery updates
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-5 h-12 rounded-xl border border-[#E8DED3] bg-white px-4 flex items-center text-sm text-[#A09388]">
+                  Enter tracking number...
+                </div>
+
+                <div className="mt-3 rounded-xl bg-[#7A1717] py-3 text-center text-sm font-bold text-white">
+                  Track Shipment →
+                </div>
+              </div>
+
+              <div className="mt-6 space-y-5">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EAF5EB] text-lg">
+                    ✓
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">Tracking tools</p>
+                    <p className="mt-1 text-xs text-[#82766D]">
+                      Available shipment information
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#EAF2FF] text-lg">
+                    🚚
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">Courier information</p>
+                    <p className="mt-1 text-xs text-[#82766D]">
+                      Explore delivery services
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#F2ECFF] text-lg">
+                    📖
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">Helpful guides</p>
+                    <p className="mt-1 text-xs text-[#82766D]">
+                      Understand shipment updates
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="px-6 pb-20">
-        <div className="mx-auto max-w-5xl">
-          <article className="rounded-2xl border border-[#E5DCD0] bg-white p-8 shadow-sm md:p-12">
-            <section>
-              <h2 className="text-3xl font-bold">
-                What Is TrackAllInOne?
-              </h2>
+      {/* INTRODUCTION */}
+      <section className="border-y border-[#E9DED2] bg-white px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="max-w-3xl">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#7A1717]">
+              Who We Are
+            </p>
 
-              <p className="mt-5 leading-8 text-[#625B55]">
-                TrackAllInOne is an independent shipment tracking
-                website designed to make it easier to find tracking
-                information and learn about courier services. Our
-                website brings tracking tools, courier information,
-                and practical delivery guides together in one place.
-              </p>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              One platform for shipment tracking and courier information.
+            </h2>
 
-              <p className="mt-4 leading-8 text-[#625B55]">
-                For supported shipments, visitors can enter a tracking
-                number on our homepage and submit a tracking request.
-                The request is processed through our tracking provider,
-                which returns the shipment information available for
-                that tracking number. Availability and detail depend
-                on the courier, provider coverage, and shipment data.
-              </p>
+            <p className="mt-6 leading-8 text-[#71665E]">
+              TrackAllInOne is an independent shipment tracking
+              website designed to help people find available parcel
+              updates and understand the delivery process.
+            </p>
 
-              <p className="mt-4 leading-8 text-[#625B55]">
-                Our courier pages also provide general information
-                about delivery services and explain how users can find
-                their tracking numbers. Not every courier listed in
-                our directory is necessarily supported by the live
-                tracking tool.
-              </p>
-            </section>
+            <p className="mt-4 leading-8 text-[#71665E]">
+              Instead of visiting multiple websites just to explore
+              courier information or understand tracking terminology,
+              visitors can use our tracking tools and educational
+              resources in one place.
+            </p>
 
-            <section className="mt-12">
-              <h2 className="text-3xl font-bold">Our Goal</h2>
+            <p className="mt-4 leading-8 text-[#71665E]">
+              Our platform is intended for online shoppers,
+              individuals, sellers, and businesses that regularly
+              send or receive shipments.
+            </p>
+          </div>
 
-              <p className="mt-5 leading-8 text-[#625B55]">
-                Our goal is to make parcel tracking more convenient
-                for online shoppers, individuals, sellers, and
-                businesses that regularly send or receive shipments.
-                We aim to help users understand tracking results,
-                common shipment statuses, and the delivery process.
-              </p>
-
-              <p className="mt-4 leading-8 text-[#625B55]">
-                We continue to improve the website's tracking
-                experience and educational resources while making
-                clear that shipment information depends on external
-                courier and tracking systems.
-              </p>
-
-              <Link
-                href="/"
-                className="mt-6 inline-flex rounded-xl bg-[#7A1717] px-6 py-3 font-semibold text-white transition hover:bg-[#941F1F]"
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {features.map((feature) => (
+              <article
+                key={feature.number}
+                className="rounded-2xl border border-[#E9DED2] bg-[#FFFCF8] p-6 transition duration-200 hover:-translate-y-1 hover:shadow-lg"
               >
-                Track a Shipment
-              </Link>
-            </section>
+                <div className="flex items-center justify-between">
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ${feature.color}`}
+                  >
+                    {feature.icon}
+                  </div>
 
-            <section className="mt-12">
-              <h2 className="text-3xl font-bold">
-                How TrackAllInOne Works
-              </h2>
-
-              <div className="mt-6 grid gap-5 md:grid-cols-3">
-                <div className="rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
-                  <p className="text-2xl font-bold text-[#7A1717]">
-                    01
-                  </p>
-                  <h3 className="mt-3 text-xl font-bold">
-                    Find Your Courier
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-[#625B55]">
-                    Explore our courier directory to find information
-                    about delivery companies and their services.
-                  </p>
+                  <span className="text-sm font-extrabold text-[#B6A79B]">
+                    {feature.number}
+                  </span>
                 </div>
 
-                <div className="rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
-                  <p className="text-2xl font-bold text-[#7A1717]">
-                    02
-                  </p>
-                  <h3 className="mt-3 text-xl font-bold">
-                    Submit Your Number
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-[#625B55]">
-                    Visit the homepage, select an available courier,
-                    and enter your shipment tracking number.
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
-                  <p className="text-2xl font-bold text-[#7A1717]">
-                    03
-                  </p>
-                  <h3 className="mt-3 text-xl font-bold">
-                    Review the Results
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-[#625B55]">
-                    Review the status and tracking events returned
-                    for your shipment, when available.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            <section className="mt-12">
-              <h2 className="text-3xl font-bold">
-                Tracking Reports and PDF Downloads
-              </h2>
-
-              <p className="mt-5 leading-8 text-[#625B55]">
-                Where the feature is available, users can download
-                a PDF summary of the tracking results displayed by
-                TrackAllInOne. The report is generated by our
-                website for personal reference and may include the
-                tracking number, available status, and tracking
-                events.
-              </p>
-
-              <p className="mt-4 leading-8 text-[#625B55]">
-                A TrackAllInOne PDF report is not an official courier
-                document, proof of payment, shipping receipt, or
-                confirmation of delivery. Users should contact the
-                relevant courier for official documentation.
-              </p>
-            </section>
-
-            <section className="mt-12">
-              <h2 className="text-3xl font-bold">
-                Tracking Guides and Courier Information
-              </h2>
-
-              <p className="mt-5 leading-8 text-[#625B55]">
-                Tracking can sometimes be confusing, especially
-                when a shipment status has not changed or a parcel
-                has not yet appeared in the system. Our educational
-                content aims to explain common tracking terms,
-                where to find tracking numbers, and steps to take
-                when tracking information is unavailable.
-              </p>
-
-              <div className="mt-6 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
-                <h3 className="text-xl font-bold">
-                  Courier Tracking Guides
+                <h3 className="mt-6 text-lg font-extrabold">
+                  {feature.title}
                 </h3>
-                <p className="mt-3 leading-7 text-[#625B55]">
-                  Read practical guidance about tracking parcels,
-                  understanding shipment updates, and troubleshooting
-                  common tracking problems.
+
+                <p className="mt-3 text-sm leading-7 text-[#71665E]">
+                  {feature.description}
                 </p>
-                <Link
-                  href="/guides"
-                  className="mt-4 inline-flex font-semibold text-[#7A1717] hover:underline"
-                >
-                  Explore Tracking Guides →
-                </Link>
-              </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="mt-5 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
-                <h3 className="text-xl font-bold">
-                  Information for Developers and Businesses
-                </h3>
-                <p className="mt-3 leading-7 text-[#625B55]">
-                  We aim to publish educational information about
-                  courier APIs, shipment tracking workflows, and
-                  logistics integrations. Actual API access,
-                  supported features, fees, and approval requirements
-                  are determined by the relevant providers.
-                </p>
-              </div>
-            </section>
+      {/* OUR GOAL */}
+      <section className="px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#7A1717]">
+              Our Purpose
+            </p>
 
-            <section className="mt-12 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-6">
-              <h2 className="text-2xl font-bold">
-                Independent Tracking Platform
-              </h2>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              Making delivery information easier to understand.
+            </h2>
+          </div>
 
-              <p className="mt-4 leading-7 text-[#625B55]">
-                TrackAllInOne is an independent website. Unless
-                expressly stated otherwise, we are not owned by,
-                operated by, or affiliated with the courier and
-                postal companies mentioned on our website.
-              </p>
+          <div className="rounded-3xl border border-[#E9DED2] bg-white p-6 shadow-sm sm:p-9">
+            <p className="leading-8 text-[#71665E]">
+              Our goal is to make parcel tracking more convenient
+              and accessible. We want visitors to have a clearer
+              understanding of shipment progress, common delivery
+              statuses, and the information provided by tracking
+              systems.
+            </p>
 
-              <p className="mt-4 leading-7 text-[#625B55]">
-                Tracking information is dependent on the data
-                returned by our tracking provider and the relevant
-                courier systems. Updates may be delayed, incomplete,
-                or unavailable. For official delivery confirmation
-                or shipment disputes, contact the relevant courier.
-              </p>
-            </section>
+            <p className="mt-4 leading-8 text-[#71665E]">
+              We continue to improve the website and its educational
+              resources. Tracking coverage and the amount of
+              information available can vary depending on the
+              courier and external tracking systems.
+            </p>
+          </div>
+        </div>
+      </section>
 
-            <section className="mt-12">
-              <h2 className="text-2xl font-bold">Contact Us</h2>
-              <p className="mt-4 leading-7 text-[#625B55]">
-                If you have a question, notice an issue, or want to
-                share feedback about TrackAllInOne, please visit
-                our Contact page.
-              </p>
-              <Link
-                href="/contact"
-                className="mt-4 inline-flex font-semibold text-[#7A1717] hover:underline"
+      {/* HOW IT WORKS */}
+      <section className="border-y border-[#E9DED2] bg-white px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#7A1717]">
+              Simple Process
+            </p>
+
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              How TrackAllInOne Works
+            </h2>
+
+            <p className="mt-4 leading-7 text-[#71665E]">
+              A straightforward way to check available shipment
+              information.
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {steps.map((step) => (
+              <article
+                key={step.number}
+                className="relative rounded-2xl border border-[#E9DED2] bg-[#FFF8ED] p-6 sm:p-7"
               >
-                Contact TrackAllInOne →
-              </Link>
-            </section>
+                <span className="text-4xl font-black text-[#E8CFC1]">
+                  {step.number}
+                </span>
+
+                <h3 className="mt-5 text-lg font-extrabold">
+                  {step.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-[#71665E]">
+                  {step.description}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#7A1717] px-7 py-3.5 text-sm font-bold text-white transition hover:bg-[#5F1010]"
+            >
+              Start Tracking →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* REPORTS */}
+      <section className="px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2">
+          <article className="rounded-3xl border border-[#E9DED2] bg-white p-7 sm:p-9">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFF0E5] text-2xl">
+              📄
+            </div>
+
+            <h2 className="mt-6 text-2xl font-extrabold">
+              Tracking Reports and PDF Downloads
+            </h2>
+
+            <p className="mt-4 leading-8 text-[#71665E]">
+              Where available, users can download a PDF summary
+              of the tracking information displayed by TrackAllInOne.
+              The report may include the tracking number, available
+              shipment status, and tracking events.
+            </p>
+
+            <p className="mt-4 text-sm leading-7 text-[#82766D]">
+              These reports are generated for personal reference.
+              They are not official courier documents, proof of
+              payment, shipping receipts, or independent confirmation
+              of delivery.
+            </p>
           </article>
+
+          <article className="rounded-3xl border border-[#E9DED2] bg-white p-7 sm:p-9">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EAF2FF] text-2xl">
+              📚
+            </div>
+
+            <h2 className="mt-6 text-2xl font-extrabold">
+              Tracking Guides and Courier Information
+            </h2>
+
+            <p className="mt-4 leading-8 text-[#71665E]">
+              Tracking updates are not always easy to understand.
+              Our guides aim to explain common shipment statuses,
+              where to find tracking numbers, and what to do when
+              tracking information is delayed or unavailable.
+            </p>
+
+            <Link
+              href="/guides"
+              className="mt-6 inline-flex items-center gap-2 font-bold text-[#7A1717] hover:underline"
+            >
+              Explore Tracking Guides →
+            </Link>
+          </article>
+        </div>
+      </section>
+
+      {/* INDEPENDENCE */}
+      <section className="px-4 pb-16 sm:px-6 sm:pb-20">
+        <div className="mx-auto max-w-6xl rounded-3xl bg-[#211D1A] p-7 text-white sm:p-10 lg:p-12">
+          <div className="max-w-3xl">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#E6B9A3]">
+              Transparency Matters
+            </p>
+
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+              An independent shipment tracking platform.
+            </h2>
+
+            <p className="mt-6 leading-8 text-[#D7CCC3]">
+              TrackAllInOne is an independent website. Unless
+              expressly stated otherwise, we are not owned by,
+              operated by, or affiliated with the courier and
+              postal companies mentioned on our platform.
+            </p>
+
+            <p className="mt-4 leading-8 text-[#D7CCC3]">
+              Shipment information depends on data returned by
+              our tracking provider and the relevant courier
+              systems. Updates may be delayed, incomplete, or
+              unavailable. For official delivery confirmation,
+              documentation, or shipment disputes, users should
+              contact the relevant courier directly.
+            </p>
+
+            <Link
+              href="/couriers"
+              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#FFF8ED] px-6 py-3.5 text-sm font-bold text-[#7A1717] transition hover:bg-white"
+            >
+              Explore Courier Directory →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT CTA */}
+      <section className="px-4 pb-20 sm:px-6">
+        <div className="mx-auto max-w-5xl rounded-3xl border border-[#E9DED2] bg-white px-6 py-12 text-center shadow-sm sm:px-12">
+          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#7A1717]">
+            Get in Touch
+          </p>
+
+          <h2 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">
+            Have a question or suggestion?
+          </h2>
+
+          <p className="mx-auto mt-4 max-w-xl leading-7 text-[#71665E]">
+            We welcome feedback, questions, and suggestions that
+            can help us improve TrackAllInOne.
+          </p>
+
+          <Link
+            href="/contact"
+            className="mt-7 inline-flex items-center gap-2 rounded-xl bg-[#7A1717] px-7 py-3.5 text-sm font-bold text-white transition hover:bg-[#5F1010]"
+          >
+            Contact Us →
+          </Link>
         </div>
       </section>
 

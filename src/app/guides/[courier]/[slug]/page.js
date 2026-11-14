@@ -4,7 +4,7 @@ import { PortableText } from "next-sanity";
 import { client } from "../../../../sanity/lib/client";
 import couriers from "../../../../data/couriers";
 import styles from "../../guides.module.css";
-
+import ArticleTableOfContents from "./ArticleTableOfContents";
 const ARTICLE_QUERY = `*[
   _type == "post" &&
   courierId == $courierId &&
@@ -97,6 +97,27 @@ export async function generateMetadata({ params }) {
     },
   };
 }
+function getPlainText(children = []) {
+  return children
+    .map((child) => child.text || "")
+    .join("")
+    .trim();
+}
+
+function getTableOfContents(body = []) {
+  return body
+    .filter(
+      (block) =>
+        block._type === "block" &&
+        ["h2", "h3"].includes(block.style)
+    )
+    .map((block) => ({
+      id: `section-${block._key}`,
+      text: getPlainText(block.children),
+      level: block.style === "h3" ? 3 : 2,
+    }))
+    .filter((item) => item.text);
+}
 
 const portableTextComponents = {
   types: {
@@ -122,12 +143,23 @@ const portableTextComponents = {
   },
 
   block: {
-    h2: ({ children }) => (
-      <h2 className={styles.articleH2}>{children}</h2>
-    ),
-    h3: ({ children }) => (
-      <h3 className={styles.articleH3}>{children}</h3>
-    ),
+   h2: ({ children, value }) => (
+  <h2
+    id={`section-${value._key}`}
+    className={styles.articleH2}
+  >
+    {children}
+  </h2>
+),
+
+h3: ({ children, value }) => (
+  <h3
+    id={`section-${value._key}`}
+    className={styles.articleH3}
+  >
+    {children}
+  </h3>
+),
     blockquote: ({ children }) => (
       <blockquote className={styles.articleQuote}>
         {children}
@@ -180,6 +212,7 @@ export default async function ArticlePage({ params }) {
   if (!article) notFound();
 
   const imageUrl = article.mainImage?.asset?.url;
+  const tableOfContents = getTableOfContents(article.body);
 
   return (
     <main className={styles.articlePage}>
@@ -240,26 +273,35 @@ export default async function ArticlePage({ params }) {
           </div>
 
           <aside className={styles.articleSidebar}>
-            <span className={styles.sidebarEyebrow}>KEEP EXPLORING</span>
+  <ArticleTableOfContents items={tableOfContents} />
 
-            <h2>More {courier.name} information</h2>
+  <div className={styles.sidebarMore}>
+    <span className={styles.sidebarEyebrow}>
+      KEEP EXPLORING
+    </span>
 
-            <p>
-              Explore more tracking guides and helpful information
-              about {courier.name}.
-            </p>
+    <h2>More {courier.name} information</h2>
 
-            <Link
-              href={`/guides/${courier.id}`}
-              className={styles.sidebarButton}
-            >
-              More {courier.name} guides →
-            </Link>
+    <p>
+      Explore more tracking guides and helpful information
+      about {courier.name}.
+    </p>
 
-            <Link href="/guides" className={styles.sidebarTextLink}>
-              Browse all tracking guides
-            </Link>
-          </aside>
+    <Link
+      href={`/guides/${courier.id}`}
+      className={styles.sidebarButton}
+    >
+      More {courier.name} guides →
+    </Link>
+
+    <Link
+      href="/guides"
+      className={styles.sidebarTextLink}
+    >
+      Browse all tracking guides
+    </Link>
+  </div>
+</aside>
         </div>
 
         <div className={styles.articleBottomNav}>

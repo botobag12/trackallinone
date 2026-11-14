@@ -3,91 +3,89 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import styles from "../app/guides/guides.module.css";
+import { usePathname } from "next/navigation";
+
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/guides", label: "Guides" },
+  { href: "/couriers", label: "Couriers" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  const closeMenu = () => {
-    setMenuOpen(false);
+  const closeMenu = () => setMenuOpen(false);
+
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
   };
 
-  const trackButtonClass =
-    "rounded-lg bg-[#7A1717] px-6 py-2.5 font-semibold text-white transition hover:bg-[#5F1010]";
-
   return (
-    <header className="border-b border-[#E5DCD0] bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex min-h-[72px] items-center justify-between">
+    <header className="relative z-40 w-full border-b border-[#EEE5D9] bg-[#FFFDF9] shadow-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-          {/* LOGO */}
+        {/* Main header row */}
+        <div className="flex min-h-[68px] items-center justify-between gap-4">
+
+          {/* Logo */}
           <Link
             href="/"
             onClick={closeMenu}
             className="flex shrink-0 items-center"
+            aria-label="TrackAllInOne home"
           >
             <img
               src="/TRACK.png"
               alt="TrackAllInOne"
-              className="h-10 w-auto object-contain sm:h-12"
+              className="h-9 w-auto object-contain sm:h-10"
             />
           </Link>
 
-          {/* DESKTOP NAVIGATION */}
-          <nav className="hidden items-center gap-8 font-medium md:flex">
-           <Link
-              href="/"
-               className={`${styles.guideNavbarLink} existing-classes`}
->
-               Home
-            </Link>
+          {/* Desktop navigation */}
+          <nav
+            aria-label="Main navigation"
+            className="hidden items-center gap-1 md:flex"
+          >
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`rounded-full px-3 py-2 text-sm font-semibold transition-colors ${
+                  isActive(item.href)
+                    ? "bg-[#F7EAE5] text-[#7A1717]"
+                    : "text-[#514943] hover:bg-[#F8F2E9] hover:text-[#7A1717]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
 
             <Link
-              href="/guides"
-               className={`${styles.guideNavbarLink} existing-classes`}
->
-               Guides
-            </Link>
-
-            <Link
-              href="/couriers"
-               className={`${styles.guideNavbarLink} existing-classes`}
->
-               Couriers
-            </Link>
-
-            <Link
-              href="/about"
-               className={`${styles.guideNavbarLink} existing-classes`}
->
-               About
-            </Link>
-
-            <Link
-              href="/contact"
-               className={`${styles.guideNavbarLink} existing-classes`}
->
-               Contact
-            </Link>
-
-            {/* TRACK BUTTON */}
-            <Link href="/#tracking" className={trackButtonClass}>
-              Track
+              href="/#tracking"
+              className="ml-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#7A1717] px-5 py-2.5 text-sm font-bold text-white transition hover:bg-[#5F1010]"
+            >
+              Track a Parcel
+              <span aria-hidden="true">→</span>
             </Link>
           </nav>
 
-          {/* MOBILE MENU BUTTON */}
+          {/* Mobile menu button */}
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-[#E5DCD0] bg-white text-[#111111] transition hover:border-[#7A1717] hover:text-[#7A1717] md:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#E9DED2] bg-white text-[#25201D] transition hover:border-[#7A1717] hover:text-[#7A1717] md:hidden"
             aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
           >
             {menuOpen ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -102,7 +100,7 @@ export default function Header() {
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -118,59 +116,37 @@ export default function Header() {
           </button>
         </div>
 
-        {/* MOBILE NAVIGATION */}
+        {/* Mobile navigation */}
         {menuOpen && (
-          <nav className="border-t border-[#E5DCD0] py-3 md:hidden">
-            <div className="flex flex-col">
-              <Link
-                href="/"
-                onClick={closeMenu}
-                className="rounded-lg px-4 py-3 font-medium transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
-              >
-                Home
-              </Link>
-
-              <Link
-                href="/guides"
-                onClick={closeMenu}
-                className="rounded-lg px-4 py-3 font-medium transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
-              >
-                Guides
-              </Link>
-
-              <Link
-                href="/couriers"
-                onClick={closeMenu}
-                className="rounded-lg px-4 py-3 font-medium transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
-              >
-                Couriers
-              </Link>
-
-              <Link
-                href="/about"
-                onClick={closeMenu}
-                className="rounded-lg px-4 py-3 font-medium transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
-              >
-                About
-              </Link>
-
-              <Link
-                href="/contact"
-                onClick={closeMenu}
-                className="rounded-lg px-4 py-3 font-medium transition hover:bg-[#FFF8ED] hover:text-[#7A1717]"
-              >
-                Contact
-              </Link>
-
-              <div className="px-4 pt-3">
+          <nav
+            id="mobile-navigation"
+            aria-label="Mobile navigation"
+            className="border-t border-[#EEE5D9] py-3 md:hidden"
+          >
+            <div className="flex flex-col gap-1">
+              {navItems.map((item) => (
                 <Link
-                  href="/#tracking"
+                  key={item.href}
+                  href={item.href}
                   onClick={closeMenu}
-                  className={`${trackButtonClass} block text-center`}
+                  className={`rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${
+                    isActive(item.href)
+                      ? "bg-[#F7EAE5] text-[#7A1717]"
+                      : "text-[#514943] hover:bg-[#F8F2E9] hover:text-[#7A1717]"
+                  }`}
                 >
-                  Track Your Shipment
+                  {item.label}
                 </Link>
-              </div>
+              ))}
+
+              <Link
+                href="/#tracking"
+                onClick={closeMenu}
+                className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-[#7A1717] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#5F1010]"
+              >
+                Track Your Shipment
+                <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </nav>
         )}
