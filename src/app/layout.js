@@ -1,5 +1,6 @@
 
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata = {
   metadataBase: new URL("https://www.trackallinone.com"),
@@ -12,27 +13,32 @@ export const metadata = {
   description:
     "Track shipments from major courier and postal services worldwide. Select your courier, enter your tracking number, and get official tracking updates.",
 
-  keywords: [
-    "shipment tracking",
-    "package tracking",
-    "parcel tracking",
-    "courier tracking",
-    "TCS tracking",
-    "DHL tracking",
-    "FedEx tracking",
-    "UPS tracking",
-    "Leopards Courier tracking",
-    "USPS tracking",
-    "Royal Mail tracking",
-    "Canada Post tracking",
-  ],
+ keywords: [
+  "shipment tracking",
+  "package tracking",
+  "parcel tracking",
+  "courier tracking",
+  "international shipment tracking",
+  "global parcel tracking",
+  "universal courier tracking",
+  "online shipment tracking",
+  "track my parcel",
+  "track my package",
+  "tracking number lookup",
+  "multi courier tracking",
+  "TCS tracking",
+  "Leopards Courier tracking",
+  "BlueEX tracking",
+  "M&P tracking",
+  "DHL tracking",
+  "FedEx tracking",
+  "UPS tracking",
+  "USPS tracking",
+  "Royal Mail tracking",
+  "Canada Post tracking",
+],
 
-  authors: [
-    {
-      name: "TrackAllInOne",
-    },
-  ],
-
+  authors: [{ name: "TrackAllInOne" }],
   creator: "TrackAllInOne",
   publisher: "TrackAllInOne",
 
@@ -104,6 +110,15 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6861173378053371"
+          crossOrigin="anonymous"
+          strategy="beforeInteractive"
+        />
+      </head>
+
       <body>
         <script
           type="application/ld+json"
