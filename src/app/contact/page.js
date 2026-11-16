@@ -46,7 +46,6 @@ const contactDetails = [
   },
   {
     title: "WhatsApp",
-    value: "+92 331 5069439",
     href: "https://wa.me/923315069439",
     description: "Message us directly on WhatsApp.",
     color: "bg-[#E5F6E9] text-[#16833D]",
@@ -68,7 +67,6 @@ const contactDetails = [
   },
   {
     title: "Phone",
-    value: "+92 331 5069439",
     href: "tel:+923315069439",
     description: "Call us for general inquiries.",
     color: "bg-[#EAF2FF] text-[#285E9B]",
@@ -136,9 +134,11 @@ export default function ContactPage() {
                   {item.title}
                 </h2>
 
-                <p className="mt-2 break-words font-semibold text-[#7A1717]">
-                  {item.value}
-                </p>
+                {item.value && (
+                  <p className="mt-2 break-words font-semibold text-[#7A1717]">
+                    {item.value}
+                  </p>
+                )}
 
                 <p className="mt-3 text-sm leading-6 text-[#82766D]">
                   {item.description}
