@@ -1,6 +1,6 @@
 
 "use client";
-
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
 import couriers from "@/data/couriers";
@@ -1256,33 +1256,19 @@ const handleTrack = async (carrierId = null) => {
             href={`/couriers/${item.id}`}
             className={`group flex min-h-[118px] flex-col justify-between rounded-2xl border p-3 transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(62,35,22,0.09)] sm:min-h-[135px] sm:p-4 ${cardColors[colorIndex]}`}
           >
-            <div className="flex items-center justify-between gap-2">
-              <div
-                className={`flex h-9 w-9 items-center justify-center rounded-xl ${iconColors[colorIndex]} transition-transform duration-200 group-hover:scale-110`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 7h11v11H3zM14 11h4l3 3v4h-7z"
-                  />
-                  <circle cx="7.5" cy="18" r="2" />
-                  <circle cx="17.5" cy="18" r="2" />
-                </svg>
-              </div>
+           <div className="relative flex h-24 w-full items-center justify-center overflow-hidden rounded-xl sm:h-28">
+  <Image
+    src={`/images/couriers/${item.id}.webp`}
+    alt={`${item.name} delivery illustration`}
+    fill
+    sizes="(max-width: 640px) 45vw, 220px"
+    className="object-contain transition-transform duration-300 group-hover:scale-105"
+  />
 
-              <span className="text-[10px] font-bold uppercase tracking-wide text-[#8A7B70]">
-                Courier
-              </span>
-            </div>
+  <span className="absolute right-2 top-2 rounded-full bg-white/90 px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-[#8A7B70]">
+    Courier
+  </span>
+</div>
 
             <div className="mt-3 min-w-0">
               <h3 className="truncate text-sm font-extrabold text-[#342C27] transition group-hover:text-[#7A1717] sm:text-base">

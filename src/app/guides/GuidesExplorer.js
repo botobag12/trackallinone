@@ -4,6 +4,9 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import couriers from "../../data/couriers";
 import styles from "./guides.module.css";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import Image from "next/image";
+
 
 function getInitials(name) {
   return name
@@ -33,6 +36,11 @@ export default function GuidesExplorer() {
 
   return (
     <div className={styles.page}>
+      <Breadcrumbs
+  items={[
+    { label: "Guides", href: "/guides" },
+  ]}
+/>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <span className={styles.eyebrow}>
@@ -115,22 +123,20 @@ export default function GuidesExplorer() {
         {filteredCouriers.length > 0 ? (
           <div className={styles.grid}>
             {filteredCouriers.map((courier, index) => (
-              <article className={styles.card} key={courier.id}>
-                <div
-                  className={`${styles.cardVisual} ${
-                    styles[`visual${(index % 3) + 1}`]
-                  }`}
-                >
-                  <span className={styles.courierMark}>
-                    {getInitials(courier.name)}
-                  </span>
+              <article className={`${styles.card} group`} key={courier.id}>
+                
+<div className={styles.cardVisual}>
+  <Image
+    src={`/images/couriers/${courier.id}.webp`}
+    alt={`${courier.name} courier delivery illustration`}
+    fill
+    sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 280px"
+    className="object-contain p-3 transition-transform duration-300 group-hover:scale-105"
+  />
 
-                  <span className={styles.visualLabel}>
-                    COURIER INFORMATION
-                  </span>
+  
+</div>
 
-                  <span className={styles.packageDecoration}>▧</span>
-                </div>
 
                 <div className={styles.cardBody}>
                   <div className={styles.cardMeta}>

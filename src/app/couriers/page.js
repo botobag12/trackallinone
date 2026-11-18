@@ -1,7 +1,10 @@
+
+import Image from "next/image";
 import Link from "next/link";
 import couriers from "@/data/couriers";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata = {
   title: "Courier Tracking Directory | TrackAllInOne",
@@ -49,11 +52,30 @@ export default function CouriersPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#FFF8ED] text-[#111111]">
-
+    <main className="min-h-screen bg-[#FFF8ED] text-[#211D1A]">
       <Header />
+      <Breadcrumbs
+  items={[
+    { label: "Couriers", href: "/couriers" },
+  ]}
+/>
 
-      <section className="px-6 py-16 text-center">
+      {/* Main Courier Directory Banner */}
+      <section className="px-5 pt-8 sm:px-6 sm:pt-10">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-2xl border border-[#E5DCD0] shadow-sm">
+          <Image
+            src="/images/courier-directory-banner.webp"
+            alt="TrackAllInOne courier tracking banner featuring a delivery truck on the road"
+            width={1600}
+            height={500}
+            priority
+            className="h-auto w-full"
+          />
+        </div>
+      </section>
+
+      {/* Page Introduction */}
+      <section className="px-6 py-14 text-center">
         <div className="mx-auto max-w-4xl">
           <p className="font-semibold uppercase tracking-[0.2em] text-[#7A1717]">
             Courier Directory
@@ -71,43 +93,7 @@ export default function CouriersPage() {
         </div>
       </section>
 
-      <section className="px-6 pb-16">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold">
-            Pakistan Courier Tracking
-          </h2>
-
-          <p className="mt-3 max-w-3xl leading-7 text-[#625B55]">
-            Find tracking access for major courier and delivery
-            services operating in Pakistan. Select a courier below
-            to visit its official tracking service.
-          </p>
-
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {pakistanCouriers.map((courier) => (
-              <Link
-                key={courier.id}
-                href={`/couriers/${courier.id}`}
-                className="rounded-2xl border border-[#E5DCD0] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-[#7A1717] hover:shadow-lg"
-              >
-                <h3 className="text-xl font-bold">
-                  {courier.name}
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-[#625B55]">
-                  Access official {courier.name} shipment tracking
-                  information.
-                </p>
-
-                <span className="mt-5 inline-block font-semibold text-[#7A1717]">
-                  Track Shipment →
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      {/* International Couriers */}
       <section className="border-t border-[#E5DCD0] bg-white px-6 py-16">
         <div className="mx-auto max-w-6xl">
           <h2 className="text-3xl font-bold">
@@ -120,35 +106,110 @@ export default function CouriersPage() {
             find its official shipment tracking service.
           </p>
 
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {internationalCouriers.map((courier) => (
               <Link
                 key={courier.id}
                 href={`/couriers/${courier.id}`}
-                className="rounded-2xl border border-[#E5DCD0] bg-[#FFF8ED] p-6 transition hover:-translate-y-1 hover:border-[#7A1717] hover:shadow-lg"
+                className="group overflow-hidden rounded-2xl border border-[#E5DCD0] bg-[#FFF8ED] transition-all duration-300 hover:-translate-y-1 hover:border-[#7A1717] hover:shadow-lg"
               >
-                <h3 className="text-xl font-bold">
-                  {courier.name}
-                </h3>
+                {/* Courier Image */}
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#F5EDE2]">
+                  <Image
+                    src={`/images/couriers/${courier.id}.webp`}
+                    alt={`${courier.name} delivery illustration`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 384px"
+                    className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                  />
 
-                <p className="mt-2 text-sm text-[#625B55]">
-                  {courier.country}
-                </p>
+                  <span className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#7A1717] shadow-sm">
+                    International
+                  </span>
+                </div>
 
-                <p className="mt-2 text-sm leading-6 text-[#625B55]">
-                  Find official {courier.name} tracking access and
-                  shipment information.
-                </p>
+                {/* Courier Information */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold transition-colors group-hover:text-[#7A1717]">
+                    {courier.name}
+                  </h3>
 
-                <span className="mt-5 inline-block font-semibold text-[#7A1717]">
-                  Track Shipment →
-                </span>
+                  <p className="mt-2 text-sm text-[#625B55]">
+                    {courier.country}
+                  </p>
+
+                  <p className="mt-3 text-sm leading-6 text-[#625B55]">
+                    Find official {courier.name} tracking access and
+                    shipment information.
+                  </p>
+
+                  <span className="mt-5 inline-block font-semibold text-[#7A1717]">
+                    Track Shipment →
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Pakistan Couriers */}
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold">
+            Pakistan Courier Tracking
+          </h2>
+
+          <p className="mt-3 max-w-3xl leading-7 text-[#625B55]">
+            Find tracking access for major courier and delivery
+            services operating in Pakistan. Select a courier below
+            to visit its official tracking service.
+          </p>
+
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {pakistanCouriers.map((courier) => (
+              <Link
+                key={courier.id}
+                href={`/couriers/${courier.id}`}
+                className="group overflow-hidden rounded-2xl border border-[#E5DCD0] bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#7A1717] hover:shadow-lg"
+              >
+                {/* Courier Image */}
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#F5EDE2]">
+                  <Image
+                    src={`/images/couriers/${courier.id}.webp`}
+                    alt={`${courier.name} delivery illustration`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 384px"
+                    className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                  />
+
+                  <span className="absolute right-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#7A1717] shadow-sm">
+                    Pakistan
+                  </span>
+                </div>
+
+                {/* Courier Information */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold transition-colors group-hover:text-[#7A1717]">
+                    {courier.name}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-6 text-[#625B55]">
+                    Access official {courier.name} shipment tracking
+                    information.
+                  </p>
+
+                  <span className="mt-5 inline-block font-semibold text-[#7A1717]">
+                    Track Shipment →
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How TrackAllInOne Helps */}
       <section className="bg-[#FFF8ED] px-6 py-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-center text-3xl font-bold">

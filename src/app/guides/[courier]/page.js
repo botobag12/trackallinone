@@ -1,8 +1,11 @@
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { client } from "../../../sanity/lib/client";
 import couriers from "../../../data/couriers";
 import styles from "../guides.module.css";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const ARTICLES_QUERY = `*[
   _type == "post" &&
@@ -72,29 +75,55 @@ export default async function CourierGuidePage({ params }) {
   }
 
   const articles = await getCourierArticles(courier.id);
-  const officialTrackingUrl = getOfficialTrackingUrl(courier);
 
   return (
     <main className={styles.page}>
-      {/* Courier heading */}
-      <section className={styles.hero}>
-        <div className={styles.heroContent}>
-          <span className={styles.eyebrow}>
-            TRACKALLINONE COURIER GUIDES
-          </span>
+      <Breadcrumbs
+        items={[
+          { label: "Guides", href: "/guides" },
+          { label: courier.name },
+        ]}
+      />
 
-          <h1>
-            {courier.name}
-            <br />
-            <span>Tracking Guides and Help</span>
-          </h1>
+    
+{/* Courier hero banner with overlaid heading */}
+<section className="relative isolate mx-auto mt-6 min-h-[340px] w-full max-w-7xl overflow-hidden rounded-2xl bg-[#211D1A] sm:min-h-[400px] lg:min-h-[440px]">
 
-          <p className={styles.heroText}>
-            Explore our published {courier.name} guides to learn about
-            tracking, delivery information, and other courier-specific topics.
-          </p>
-        </div>
-      </section>
+  <Image
+    src={`/images/couriers/${courier.id}.webp`}
+    alt={`${courier.name} courier delivery illustration`}
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover object-center"
+  />
+
+  {/* Gradient for text readability */}
+  <div className="absolute inset-0 bg-gradient-to-r from-[#211D1A]/95 via-[#211D1A]/75 to-[#211D1A]/10" />
+
+  {/* Existing courier heading */}
+  <div className="relative z-10 flex min-h-[340px] max-w-2xl flex-col justify-center px-6 py-12 sm:min-h-[400px] sm:px-10 lg:min-h-[440px] lg:px-14">
+
+    <span className="mb-4 text-xs font-bold tracking-[0.2em] text-[#E7B9A4]">
+      TRACKALLINONE COURIER GUIDES
+    </span>
+
+    <h1 className="text-3xl font-extrabold leading-tight text-white sm:text-4xl lg:text-5xl">
+      {courier.name}
+      <br />
+      <span className="text-[#F2C6A9]">
+        Tracking Guides and Help
+      </span>
+    </h1>
+
+    <p className="mt-5 max-w-xl text-sm leading-7 text-white/85 sm:text-base">
+      Explore our published {courier.name} guides to learn about
+      tracking, delivery information, and other courier-specific topics.
+    </p>
+
+  </div>
+</section>
+
 
       {/* Published article cards */}
       <section className={styles.content}>
@@ -196,8 +225,7 @@ export default async function CourierGuidePage({ params }) {
           </div>
         )}
 
-        {/* Official courier resource */}
-       
+        {/* Back to all courier guides */}
         <div className={styles.backLink}>
           <Link href="/guides" className={styles.readLink}>
             ← Back to all courier guides

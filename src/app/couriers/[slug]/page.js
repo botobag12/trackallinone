@@ -1,9 +1,13 @@
 
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import couriers from "@/data/couriers";
+import { client } from "@/sanity/lib/client";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import styles from "../../guides/guides.module.css";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export function generateStaticParams() {
   return couriers.map((courier) => ({
@@ -67,6 +71,43 @@ export async function generateMetadata({ params }) {
   };
 }
 
+// Fetch the latest three published articles for this courier.
+const ARTICLES_QUERY = `*[
+  _type == "post" &&
+  courierId == $courierId &&
+  defined(slug.current) &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+] | order(publishedAt desc)[0...3] {
+  _id,
+  title,
+  "slug": slug.current,
+  excerpt,
+  publishedAt,
+  mainImage {
+    alt,
+    asset-> {
+      url
+    }
+  }
+}`;
+
+async function getCourierArticles(courierId) {
+  return client.fetch(
+    ARTICLES_QUERY,
+    { courierId },
+    { next: { revalidate: 60 } }
+  );
+}
+
+function formatDate(date) {
+  return new Intl.DateTimeFormat("en", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(date));
+}
+
 export default async function CourierPage({ params }) {
   const { slug } = await params;
 
@@ -76,10 +117,17 @@ export default async function CourierPage({ params }) {
     notFound();
   }
 
+  const articles = await getCourierArticles(courier.id);
+
   return (
     <main className="min-h-screen bg-[#FFF8ED] text-[#111111]">
       <Header />
-
+<Breadcrumbs
+  items={[
+    { label: "Couriers", href: "/couriers" },
+    { label: courier.name },
+  ]}
+/>
       <section className="px-6 py-20">
         <div className="mx-auto max-w-4xl">
           <Link
@@ -90,7 +138,18 @@ export default async function CourierPage({ params }) {
           </Link>
 
           <div className="mt-8 rounded-2xl border border-[#E5DCD0] bg-white p-8 shadow-sm md:p-12">
-            <p className="font-semibold uppercase tracking-[0.15em] text-[#7A1717]">
+    <div className="mb-8 w-full overflow-hidden rounded-2xl">
+  <Image
+    src={`/images/couriers/${courier.id}.webp`}
+    alt={`${courier.name} courier delivery banner`}
+    width={1600}
+    height={900}
+    priority
+    sizes="(max-width: 768px) 100vw, 1200px"
+    className="h-auto w-full"
+  />
+</div>
+          <p className="font-semibold uppercase tracking-[0.15em] text-[#7A1717]">
               {courier.country}
             </p>
 
@@ -203,6 +262,104 @@ export default async function CourierPage({ params }) {
               </Link>
             </div>
 
+            {/* Courier-specific published guides */}
+            {articles.length > 0 && (
+              <section className="mt-14 border-t border-[#E5DCD0] pt-10">
+                <div className="mb-8">
+                  <span className={styles.sectionEyebrow}>
+                    COURIER-SPECIFIC ARTICLES
+                  </span>
+
+                  <h2 className="mt-2 text-2xl font-bold">
+                    Latest {courier.name} Tracking Guides
+                  </h2>
+
+                  <p className="mt-3 leading-7 text-[#625B55]">
+                    Explore our latest {courier.name} guides for
+                    tracking information, delivery updates, and
+                    helpful shipment advice.
+                  </p>
+                </div>
+
+                <div className={styles.grid}>
+                  {articles.map((article) => (
+                    <article
+                      className={styles.articleCard}
+                      key={article._id}
+                    >
+                      <Link
+                        href={`/guides/${courier.id}/${article.slug}`}
+                        className={styles.thumbnailWrap}
+                        aria-label={`Read ${article.title}`}
+                      >
+                        {article.mainImage?.asset?.url ? (
+                          <img
+                            src={article.mainImage.asset.url}
+                            alt={
+                              article.mainImage.alt ||
+                              `Featured image for ${article.title}`
+                            }
+                            className={styles.thumbnail}
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className={styles.thumbnailPlaceholder}>
+                            <span>{courier.name}</span>
+                            <span>Tracking Guide</span>
+                          </div>
+                        )}
+                      </Link>
+
+                      <div className={styles.articleCardBody}>
+                        <div className={styles.cardMeta}>
+                          <span className={styles.categoryTag}>
+                            {courier.name}
+                          </span>
+
+                          <span className={styles.articleDate}>
+                            {formatDate(article.publishedAt)}
+                          </span>
+                        </div>
+
+                        <h3 className={styles.articleTitle}>
+                          <Link
+                            href={`/guides/${courier.id}/${article.slug}`}
+                          >
+                            {article.title}
+                          </Link>
+                        </h3>
+
+                        {article.excerpt && (
+                          <p className={styles.articleExcerpt}>
+                            {article.excerpt}
+                          </p>
+                        )}
+
+                        <div className={styles.articleCardFooter}>
+                          <Link
+                            href={`/guides/${courier.id}/${article.slug}`}
+                            className={styles.readLink}
+                          >
+                            Read Guide{" "}
+                            <span aria-hidden="true">→</span>
+                          </Link>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+
+                <div className="mt-8">
+                  <Link
+                    href={`/guides/${courier.id}`}
+                    className="inline-flex font-semibold text-[#7A1717] transition hover:text-[#941F1F] hover:underline"
+                  >
+                    View All {courier.name} Guides →
+                  </Link>
+                </div>
+              </section>
+            )}
+
             <div className="mt-10 rounded-xl border border-[#E5DCD0] bg-[#FFF8ED] p-5">
               <p className="text-sm leading-6 text-[#625B55]">
                 TrackAllInOne is an independent tracking website
@@ -217,6 +374,42 @@ export default async function CourierPage({ params }) {
           </div>
         </div>
       </section>
+      {courier.faqs?.length > 0 && (
+  <section className="mt-12 rounded-2xl border border-[#E5DCD0] bg-white p-6 shadow-sm sm:p-8 md:p-10">
+    <div className="mx-auto max-w-4xl">
+      <p className="text-sm font-bold uppercase tracking-[0.15em] text-[#7A1717]">
+        Frequently Asked Questions
+      </p>
+
+      <h2 className="mt-3 text-2xl font-bold text-[#211D1A] sm:text-3xl">
+        {courier.name} Tracking FAQs
+      </h2>
+
+      <p className="mt-3 text-sm leading-7 text-[#756B63]">
+        Find answers to common questions about {courier.name} tracking,
+        delivery updates, and shipment status.
+      </p>
+
+      <div className="mt-8 divide-y divide-[#E5DCD0]">
+        {courier.faqs.map((faq, index) => (
+          <details key={index} className="group py-5">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-[#211D1A] marker:hidden">
+              <span>{faq.question}</span>
+
+              <span className="shrink-0 text-xl text-[#7A1717] transition-transform duration-200 group-open:rotate-45">
+                +
+              </span>
+            </summary>
+
+            <p className="mt-4 pr-6 text-sm leading-7 text-[#756B63]">
+              {faq.answer}
+            </p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
 
       <Footer />
     </main>

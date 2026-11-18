@@ -5,6 +5,7 @@ import { client } from "../../../../sanity/lib/client";
 import couriers from "../../../../data/couriers";
 import styles from "../../guides.module.css";
 import ArticleTableOfContents from "./ArticleTableOfContents";
+import Breadcrumbs from "@/components/Breadcrumbs";
 const ARTICLE_QUERY = `*[
   _type == "post" &&
   courierId == $courierId &&
@@ -216,16 +217,15 @@ export default async function ArticlePage({ params }) {
 
   return (
     <main className={styles.articlePage}>
+      <Breadcrumbs
+  items={[
+    { label: "Guides", href: "/guides" },
+    { label: courier.name, href: `/guides/${courier.id}` },
+    { label: article.title },
+  ]}
+/>
       <div className={styles.articleContainer}>
-        <nav className={styles.breadcrumbs} aria-label="Breadcrumb">
-          <Link href="/guides">Guides</Link>
-          <span aria-hidden="true">/</span>
-          <Link href={`/guides/${courier.id}`}>{courier.name}</Link>
-          <span aria-hidden="true">/</span>
-          <span className={styles.breadcrumbCurrent}>
-            {article.title}
-          </span>
-        </nav>
+        
 
         <header className={styles.articleHeader}>
           <span className={styles.articleEyebrow}>

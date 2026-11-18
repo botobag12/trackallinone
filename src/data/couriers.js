@@ -1,3 +1,4 @@
+
 const couriers = [
   // =========================
   // PAKISTAN
@@ -454,7 +455,8 @@ const couriers = [
     id: "dpd",
     name: "DPD",
     country: "Europe / United Kingdom",
-    origin: "DPD's original parcel service began in Germany; it operates through a wider international network.",
+    origin:
+      "DPD's original parcel service began in Germany; it operates through a wider international network.",
     coverage:
       "DPD operates across multiple European markets, including the United Kingdom. Services, tracking pages, and delivery options vary by country.",
     services: [
@@ -481,4 +483,522 @@ const couriers = [
   },
 ];
 
-export default couriers;
+// =========================
+// COURIER-SPECIFIC FAQs
+// =========================
+
+const courierFaqs = {
+  tcs: [
+    {
+      question: "How can I track a TCS parcel?",
+      answer:
+        "Enter your TCS tracking number in the TrackAllInOne tracking tool. The available tracking information will help you check the latest recorded progress of your shipment.",
+    },
+    {
+      question: "Where can I find my TCS tracking number?",
+      answer:
+        "Check the booking receipt, shipment confirmation, or message provided by the sender. If you cannot locate the number, contact the sender or the TCS booking office.",
+    },
+    {
+      question: "Why is my TCS tracking status not changing?",
+      answer:
+        "A shipment may not receive a new tracking scan at every stage of its journey. Updates can take time to appear. Check again later or consult TCS if the status remains unchanged.",
+    },
+    {
+      question: "How can I get help with a delayed TCS shipment?",
+      answer:
+        "Review the latest tracking information first. For shipment-specific assistance, contact TCS through its official website and provide your tracking number.",
+    },
+  ],
+
+  leopards: [
+    {
+      question: "How do I track a Leopards Courier parcel?",
+      answer:
+        "Enter the consignment number supplied by the sender into the TrackAllInOne tracking tool to check the available shipment updates.",
+    },
+    {
+      question: "What is a Leopards consignment number?",
+      answer:
+        "It is the shipment reference used to identify and track a parcel. You can usually find it on the booking receipt or shipment confirmation.",
+    },
+    {
+      question: "Why is my Leopards tracking information unavailable?",
+      answer:
+        "The shipment may not have been scanned into the tracking system yet, or the entered number may need checking. Confirm the consignment number and try again later.",
+    },
+    {
+      question: "How can I ask Leopards about a delivery issue?",
+      answer:
+        "Use the official Leopards website or its customer support channels. Keep your consignment number available when asking about a shipment.",
+    },
+  ],
+
+  blueex: [
+    {
+      question: "How can I check a BlueEx shipment?",
+      answer:
+        "Use the tracking tool on TrackAllInOne to check whether tracking information is available for your BlueEx shipment. You can also consult BlueEx's official website.",
+    },
+    {
+      question: "Where can I get my BlueEx tracking number?",
+      answer:
+        "The sender or online store should provide the shipment reference after booking. Check your order confirmation or contact the seller if it is missing.",
+    },
+    {
+      question: "Can I track a BlueEx cash-on-delivery order?",
+      answer:
+        "If the order has a BlueEx shipment reference and tracking information is available, you can use that reference to check its recorded progress.",
+    },
+    {
+      question: "What should I do if my BlueEx parcel is delayed?",
+      answer:
+        "Check the latest available shipment information and contact the seller or BlueEx through its official contact page if you need further assistance.",
+    },
+  ],
+
+  mp: [
+    {
+      question: "How do I track an M&P Courier shipment?",
+      answer:
+        "Use the shipment reference provided by the sender to check available tracking information through TrackAllInOne or M&P's official website.",
+    },
+    {
+      question: "Where can I find my M&P tracking number?",
+      answer:
+        "Look for the tracking or consignment reference on your booking receipt, order confirmation, or message from the sender.",
+    },
+    {
+      question: "Why is my M&P parcel not showing tracking updates?",
+      answer:
+        "Tracking information may take time to appear after a shipment is booked or scanned. Verify the reference number and check again later.",
+    },
+    {
+      question: "Who should I contact about an M&P delivery problem?",
+      answer:
+        "For a shipment-specific issue, contact M&P through its official website and share the tracking reference so the team can identify the parcel.",
+    },
+  ],
+
+  "pakistan-post": [
+    {
+      question: "How can I track a Pakistan Post parcel?",
+      answer:
+        "Use the article or tracking number provided when the item was booked. Enter it into the tracking tool or check the Pakistan Post official tracking service.",
+    },
+    {
+      question: "What is a Pakistan Post article number?",
+      answer:
+        "An article number is a reference assigned to a postal item or shipment. It helps identify eligible items when checking their tracking progress.",
+    },
+    {
+      question: "Why is my Pakistan Post tracking not updating?",
+      answer:
+        "Postal tracking updates depend on recorded scans and processing stages. Some stages may not generate an immediate update, so check again later.",
+    },
+    {
+      question: "How can I get help with a Pakistan Post delivery?",
+      answer:
+        "Keep your article number and booking details ready, then contact Pakistan Post or visit an appropriate post office for shipment assistance.",
+    },
+  ],
+
+  trax: [
+    {
+      question: "How can I track a Trax shipment?",
+      answer:
+        "Enter the shipment reference supplied by the sender or online store into TrackAllInOne to check available tracking information.",
+    },
+    {
+      question: "Where can I find my Trax tracking number?",
+      answer:
+        "Check the order confirmation or shipping notification from the seller. If the reference was not provided, ask the seller for the Trax shipment number.",
+    },
+    {
+      question: "Can I track a Trax cash-on-delivery order?",
+      answer:
+        "You can check the recorded shipment progress when the order has been booked with Trax and a valid tracking reference is available.",
+    },
+    {
+      question: "What if my Trax shipment has no recent updates?",
+      answer:
+        "A new scan may not be available at every stage. Check the number again later and contact the seller or Trax through its official website if the delay continues.",
+    },
+  ],
+
+  usps: [
+    {
+      question: "How can I track a USPS package?",
+      answer:
+        "Enter your USPS tracking number into TrackAllInOne to check the available shipment updates. You can also use the official USPS tracking service for carrier-specific information.",
+    },
+    {
+      question: "Where can I find my USPS tracking number?",
+      answer:
+        "Look on your mailing receipt, shipping label, or shipment confirmation. If someone else sent the package, ask the sender to share the tracking number.",
+    },
+    {
+      question: "What does In Transit mean for a USPS package?",
+      answer:
+        "In Transit generally indicates that the package is moving through the USPS delivery network. Check subsequent tracking updates for its latest recorded progress.",
+    },
+    {
+      question: "Why has my USPS tracking not updated?",
+      answer:
+        "Tracking scans may not appear continuously while a package is travelling or being processed. Verify the number and check the official USPS tracking page if updates remain unavailable.",
+    },
+  ],
+
+  fedex: [
+    {
+      question: "How do I track a FedEx package?",
+      answer:
+        "Enter your FedEx tracking number in TrackAllInOne to check available shipment events. For additional carrier-specific details, use the official FedEx tracking page.",
+    },
+    {
+      question: "Where can I find my FedEx tracking number?",
+      answer:
+        "The number may appear on your shipping receipt, package confirmation email, or shipment notification from the sender.",
+    },
+    {
+      question: "What does a FedEx delivery exception mean?",
+      answer:
+        "A delivery exception indicates that an unexpected event has affected the shipment's normal progress. Review the detailed tracking information for the explanation and any next steps.",
+    },
+    {
+      question: "What should I do if my FedEx package is delayed?",
+      answer:
+        "Review the latest tracking events and estimated delivery information. If you need clarification about the shipment, contact FedEx through its official support channels.",
+    },
+  ],
+
+  ups: [
+    {
+      question: "How can I track a UPS package?",
+      answer:
+        "Enter your UPS tracking number into TrackAllInOne to check available shipment updates. You can also consult the official UPS tracking page.",
+    },
+    {
+      question: "Where can I find my UPS tracking number?",
+      answer:
+        "Check the shipping receipt, order confirmation, or notification from the sender. The sender can provide the number if it was not shared with you.",
+    },
+    {
+      question: "What does UPS In Transit mean?",
+      answer:
+        "It generally means that UPS has recorded the package as moving through its delivery network. Further scans may provide more detail about its progress.",
+    },
+    {
+      question: "Why is my UPS tracking not showing a new update?",
+      answer:
+        "A package may travel between facilities without an immediate new scan appearing online. Confirm the tracking number and check again later.",
+    },
+  ],
+
+  dhl: [
+    {
+      question: "How do I track an international DHL shipment?",
+      answer:
+        "Enter the DHL tracking number into TrackAllInOne to check available shipment events. For detailed international shipment information, you can also use DHL's official tracking service.",
+    },
+    {
+      question: "Where can I find my DHL tracking number?",
+      answer:
+        "Your tracking number is usually provided by the sender, online store, or shipping confirmation. Check the dispatch email or shipment receipt.",
+    },
+    {
+      question: "Why is my DHL international shipment delayed?",
+      answer:
+        "International shipments can involve transportation, customs processing, and local delivery stages. Review the latest tracking events and contact DHL if you need shipment-specific clarification.",
+    },
+    {
+      question: "What does customs clearance mean in DHL tracking?",
+      answer:
+        "It refers to the process of handling a shipment through the customs requirements of a country. The time required can vary depending on the destination and shipment documentation.",
+    },
+  ],
+
+  aramex: [
+    {
+      question: "How can I track an Aramex shipment?",
+      answer:
+        "Enter your Aramex shipment reference in TrackAllInOne to check available tracking events. You can also use the official Aramex tracking website.",
+    },
+    {
+      question: "Where can I find my Aramex tracking number?",
+      answer:
+        "Check the shipping confirmation, booking receipt, or message sent by the sender or online store.",
+    },
+    {
+      question: "Why is my Aramex shipment status not changing?",
+      answer:
+        "Tracking updates depend on shipment scans and processing events. If no new information appears, verify the reference and check again later.",
+    },
+    {
+      question: "How can I get assistance with an Aramex delivery?",
+      answer:
+        "Contact Aramex through its official website and provide your shipment reference and relevant delivery details.",
+    },
+  ],
+
+  "sf-express": [
+    {
+      question: "How can I track an SF Express parcel?",
+      answer:
+        "Enter your SF Express tracking number into TrackAllInOne to check available shipment updates. You can also use the official SF Express website.",
+    },
+    {
+      question: "Where can I find my SF Express tracking number?",
+      answer:
+        "The sender, seller, or shipping confirmation should provide the shipment reference. Check your order details if you cannot find it.",
+    },
+    {
+      question: "Can I track an international SF Express shipment?",
+      answer:
+        "Tracking availability depends on the service and destination. Enter your shipment reference to see whether tracking information is available.",
+    },
+    {
+      question: "Why has my SF Express parcel stopped updating?",
+      answer:
+        "International transportation and handovers between delivery partners may affect when new events appear. Check the official tracking service for the latest recorded information.",
+    },
+  ],
+
+  "royal-mail": [
+    {
+      question: "How do I track a Royal Mail parcel?",
+      answer:
+        "Enter your Royal Mail tracking reference into TrackAllInOne to check available updates. Tracking availability depends on the service used for the item.",
+    },
+    {
+      question: "Where can I find my Royal Mail tracking number?",
+      answer:
+        "Check the posting receipt, dispatch confirmation, or message from the sender. The sender can provide the reference if it is missing.",
+    },
+    {
+      question: "What does Royal Mail tracking mean by an item being in transit?",
+      answer:
+        "It generally means the item is progressing through the postal or delivery network. Check later tracking events for further information.",
+    },
+    {
+      question: "What should I do if Royal Mail tracking shows a delay?",
+      answer:
+        "Review the latest tracking details and any delivery information provided. If you need more help, contact Royal Mail through its official website.",
+    },
+  ],
+
+  evri: [
+    {
+      question: "How can I track an Evri parcel?",
+      answer:
+        "Use the parcel tracking reference provided by the sender or retailer. Enter it into TrackAllInOne to check available shipment updates.",
+    },
+    {
+      question: "Where can I find my Evri tracking number?",
+      answer:
+        "Check the retailer's dispatch email, order details, or shipping notification. Contact the retailer if the parcel reference has not been provided.",
+    },
+    {
+      question: "Why is my Evri parcel tracking not updating?",
+      answer:
+        "A parcel may be awaiting its next scan or processing event. Confirm the tracking reference and check the official Evri tracking service again later.",
+    },
+    {
+      question: "How can I check an Evri parcel delivery problem?",
+      answer:
+        "Review the latest tracking information first. For help with a particular parcel, use Evri's official support options and provide your tracking reference.",
+    },
+  ],
+
+  "canada-post": [
+    {
+      question: "How can I track a Canada Post package?",
+      answer:
+        "Enter your Canada Post tracking number into TrackAllInOne to check available tracking events. You can also use the official Canada Post tracking service.",
+    },
+    {
+      question: "Where can I find my Canada Post tracking number?",
+      answer:
+        "Look on your mailing receipt, shipping confirmation, or notification from the sender. Ask the sender if you do not have the number.",
+    },
+    {
+      question: "Why is my Canada Post tracking not updating?",
+      answer:
+        "Not every stage of a parcel's journey produces an immediate tracking event. Check that the number is correct and review the official tracking page for updates.",
+    },
+    {
+      question: "Can I track an international Canada Post parcel?",
+      answer:
+        "Tracking depends on the mailing service and destination. Enter the tracking number to see the information available for your shipment.",
+    },
+  ],
+
+  "australia-post": [
+    {
+      question: "How do I track an Australia Post parcel?",
+      answer:
+        "Enter your tracking number into TrackAllInOne to check available shipment events. You can also check the official Australia Post tracking service.",
+    },
+    {
+      question: "Where can I find my Australia Post tracking number?",
+      answer:
+        "Check your lodgement receipt, dispatch email, or order confirmation. If the item was sent by someone else, ask the sender for the reference.",
+    },
+    {
+      question: "Why is my Australia Post parcel not showing updates?",
+      answer:
+        "Tracking information may take time to appear after a parcel is lodged or scanned. Verify the reference and check again later.",
+    },
+    {
+      question: "Can I track an international Australia Post shipment?",
+      answer:
+        "Tracking availability varies according to the service and destination. Use the shipment reference to check the events currently available.",
+    },
+  ],
+
+  "japan-post": [
+    {
+      question: "How can I track a Japan Post shipment?",
+      answer:
+        "Enter your Japan Post tracking number into TrackAllInOne to check available shipment information. The official Japan Post tracking service can provide additional details.",
+    },
+    {
+      question: "Where can I find my Japan Post tracking number?",
+      answer:
+        "The reference is generally provided on the mailing receipt or by the sender. Check your shipping confirmation if you cannot locate it.",
+    },
+    {
+      question: "Can Japan Post international parcels be tracked?",
+      answer:
+        "Tracking depends on the postal service selected and the destination country's handling arrangements. Check the available events using your tracking number.",
+    },
+    {
+      question: "Why is my Japan Post tracking not updating?",
+      answer:
+        "There may be a gap between postal processing scans, particularly during international transportation or handover. Check again later and consult the official tracking service.",
+    },
+  ],
+
+  "india-post": [
+    {
+      question: "How can I track an India Post parcel?",
+      answer:
+        "Use the consignment reference provided at booking. Enter it into TrackAllInOne or check the official India Post tracking service for available updates.",
+    },
+    {
+      question: "What is an India Post consignment number?",
+      answer:
+        "It is the reference assigned to a postal article or parcel. It is used to identify eligible shipments when checking their tracking progress.",
+    },
+    {
+      question: "Why is my India Post tracking status not updating?",
+      answer:
+        "Tracking events depend on postal scans and processing stages. If the status has not changed, verify the consignment number and check again later.",
+    },
+    {
+      question: "Can I track an international India Post parcel?",
+      answer:
+        "Tracking availability depends on the postal service and destination. Some shipment events may also be recorded by the destination country's postal operator.",
+    },
+  ],
+
+  "poste-italiane": [
+    {
+      question: "How can I track a Poste Italiane parcel?",
+      answer:
+        "Use the shipment reference provided by the sender to check available tracking information through TrackAllInOne or the official Poste Italiane website.",
+    },
+    {
+      question: "Where can I find my Poste Italiane tracking code?",
+      answer:
+        "Check the shipping receipt, dispatch confirmation, or order notification. Contact the sender if the reference was not shared.",
+    },
+    {
+      question: "Why is my Poste Italiane shipment not updating?",
+      answer:
+        "Tracking events may not appear continuously while an item is being processed or transported. Confirm the reference and check again later.",
+    },
+    {
+      question: "Can I track an international Poste Italiane shipment?",
+      answer:
+        "Tracking availability depends on the service and destination. International shipments may also receive updates from the postal operator handling the item abroad.",
+    },
+  ],
+
+  correos: [
+    {
+      question: "How can I track a Correos parcel?",
+      answer:
+        "Enter the shipment reference supplied by the sender into TrackAllInOne to check available tracking information. You can also consult the official Correos website.",
+    },
+    {
+      question: "Where can I find my Correos tracking number?",
+      answer:
+        "Look in your shipping confirmation, order details, or posting receipt. If the parcel was sent by another person, request the reference from the sender.",
+    },
+    {
+      question: "Why is my Correos parcel tracking not changing?",
+      answer:
+        "A parcel may be moving between facilities or awaiting another processing scan. Check the number and review the official tracking page again later.",
+    },
+    {
+      question: "Can I track an international Correos shipment?",
+      answer:
+        "Tracking depends on the service and destination. Some international tracking events may be provided by the postal operator in the destination country.",
+    },
+  ],
+
+  gls: [
+    {
+      question: "How can I track a GLS parcel?",
+      answer:
+        "Enter your GLS parcel number into TrackAllInOne to check available shipment updates. The relevant GLS country website may provide additional local tracking information.",
+    },
+    {
+      question: "Where can I find my GLS parcel number?",
+      answer:
+        "Check the dispatch notification, order confirmation, or shipping information from the sender or retailer.",
+    },
+    {
+      question: "Why does GLS tracking show no new information?",
+      answer:
+        "Tracking updates depend on scans recorded within the relevant GLS network. Confirm the parcel number and check the appropriate country-specific GLS service.",
+    },
+    {
+      question: "Does GLS tracking work for international parcels?",
+      answer:
+        "Tracking availability depends on the countries and GLS services involved. Cross-border shipments may show additional events as the parcel moves between delivery networks.",
+    },
+  ],
+
+  dpd: [
+    {
+      question: "How can I track a DPD parcel?",
+      answer:
+        "Enter your DPD parcel reference into TrackAllInOne to check available shipment events. For more specific information, use the DPD tracking service for the country handling your parcel.",
+    },
+    {
+      question: "Where can I find my DPD tracking number?",
+      answer:
+        "Check the dispatch email, retailer's order page, or shipment notification. The sender can provide the parcel reference if you do not have it.",
+    },
+    {
+      question: "Why does DPD tracking show a different country or delivery network?",
+      answer:
+        "DPD operates through country-specific networks and services. International shipments may be handled by different local operations as they move toward their destination.",
+    },
+    {
+      question: "What should I do if my DPD parcel is delayed?",
+      answer:
+        "Review the latest tracking events and use the DPD website for the country handling your delivery. Contact the sender or relevant DPD support team if you need further assistance.",
+    },
+  ],
+};
+
+// Attach the matching FAQ list to each courier using its ID.
+const couriersWithFaqs = couriers.map((courier) => ({
+  ...courier,
+  faqs: courierFaqs[courier.id] ?? [],
+}));
+
+export default couriersWithFaqs;
